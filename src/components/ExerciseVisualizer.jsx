@@ -121,6 +121,37 @@ export const ExerciseVisualizer = ({ animationType, isPlaying = true, className 
           break;
         }
 
+        case 'shrugs': {
+          // Standing figure shrugging shoulders straight up
+          const shrugLift = progress * 15;
+          const headY = 65 - shrugLift * 0.4;
+          drawHead(centerX, headY);
+
+          const shoulderY = 85 - shrugLift;
+          ctx.beginPath();
+          ctx.moveTo(centerX, headY + 14);
+          ctx.lineTo(centerX, 150);
+          ctx.lineTo(centerX - 20, 220);
+          ctx.moveTo(centerX, 150);
+          ctx.lineTo(centerX + 20, 220);
+          ctx.strokeStyle = bodyColor;
+          ctx.stroke();
+
+          // Arms hanging down but lifting with shoulders
+          const handY = 150 - shrugLift;
+          ctx.beginPath();
+          ctx.moveTo(centerX - 20, shoulderY);
+          ctx.lineTo(centerX - 25, handY);
+          ctx.moveTo(centerX + 20, shoulderY);
+          ctx.lineTo(centerX + 25, handY);
+          ctx.strokeStyle = accentNeon;
+          ctx.stroke();
+
+          drawDumbbell(centerX - 25, handY);
+          drawDumbbell(centerX + 25, handY);
+          break;
+        }
+
         case 'lateral_raise': {
           // Standing figure raising arms out to sides
           const headY = 65;

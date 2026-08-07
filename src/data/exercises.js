@@ -149,6 +149,76 @@ export const EXERCISES = [
     animationType: 'arnold_press'
   },
   {
+    id: 'db-shrugs',
+    name: 'Dumbbell Trap Shrugs',
+    category: 'Shoulders',
+    difficulty: 'Beginner',
+    equipment: 'Pair of Heavy Dumbbells',
+    targetMuscles: ['Upper Trapezius'],
+    secondaryMuscles: ['Levator Scapulae', 'Forearms'],
+    description: 'Isolates upper traps to build shoulder height, neck support, and upper back thickness.',
+    steps: [
+      'Stand upright holding dumbbells at sides, arms extended.',
+      'Elevate your shoulders straight up toward your ears as high as possible without bending elbows.',
+      'Hold the top peak contraction for 1 second.',
+      'Slowly lower shoulders back down under full control.'
+    ],
+    formTips: [
+      'Shrug straight up and down—do not roll your shoulders in circles.'
+    ],
+    defaultSets: 3,
+    defaultReps: 12,
+    defaultWeight: 16,
+    defaultRestSec: 45,
+    animationType: 'shrugs'
+  },
+  {
+    id: 'db-pullover',
+    name: 'Dumbbell Back Pullover',
+    category: 'Back',
+    difficulty: 'Intermediate',
+    equipment: 'Single Dumbbell & Bench',
+    targetMuscles: ['Latissimus Dorsi', 'Serratus Anterior'],
+    secondaryMuscles: ['Chest', 'Triceps'],
+    description: 'Stretches and builds upper lats, serratus, and thoracic extension.',
+    steps: [
+      'Lie perpendicular across a flat bench with upper back supported, holding one dumbbell overhead.',
+      'With a slight bend in elbows, lower dumbbell back behind your head in a wide arc until lats stretch.',
+      'Pull dumbbell back over chest using your lats, squeezing at top.'
+    ],
+    formTips: [
+      'Keep hips slightly dipped to maintain deep stretch in upper back.'
+    ],
+    defaultSets: 3,
+    defaultReps: 10,
+    defaultWeight: 14,
+    defaultRestSec: 60,
+    animationType: 'pullover'
+  },
+  {
+    id: 'db-renegade-row',
+    name: 'Dumbbell Renegade Row',
+    category: 'Back',
+    difficulty: 'Advanced',
+    equipment: 'Pair of Hex Dumbbells',
+    targetMuscles: ['Latissimus Dorsi', 'Core / Abs'],
+    secondaryMuscles: ['Rhomboids', 'Shoulders', 'Triceps'],
+    description: 'High-intensity plank combined with dumbbell row for core anti-rotation and upper back power.',
+    steps: [
+      'Start in a push-up plank position gripping hexagonal dumbbells under shoulders, feet wide for stability.',
+      'Keeping core rigid, row one dumbbell up to your lower hip while balancing on the opposite hand.',
+      'Lower dumbbell back to floor, then repeat on opposite side.'
+    ],
+    formTips: [
+      'Squeeze glutes and core tight to keep hips from swaying side to side.'
+    ],
+    defaultSets: 3,
+    defaultReps: 10,
+    defaultWeight: 12,
+    defaultRestSec: 60,
+    animationType: 'renegade_row'
+  },
+  {
     id: 'db-bicep-curl',
     name: 'Dumbbell Bicep Curls',
     category: 'Arms',
