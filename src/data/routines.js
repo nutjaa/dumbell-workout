@@ -1,8 +1,45 @@
 export const DEFAULT_ROUTINES = [
+  // --- KETTLEBELL ROUTINES ---
+  {
+    id: 'routine-kb-power',
+    title: 'Kettlebell Core & Power Conditioning',
+    category: 'Kettlebell',
+    equipmentType: 'Kettlebell',
+    description: 'Explosive kettlebell conditioning flow featuring Russian swings, cleans, Turkish get-ups, high pulls, and windmills.',
+    estimatedMinutes: 28,
+    difficulty: 'Intermediate',
+    exercises: [
+      { exerciseId: 'kb-swings', sets: 4, targetReps: 15, targetWeight: 16, restSec: 45 },
+      { exerciseId: 'kb-clean-press', sets: 4, targetReps: 10, targetWeight: 14, restSec: 60 },
+      { exerciseId: 'kb-high-pull', sets: 3, targetReps: 12, targetWeight: 16, restSec: 60 },
+      { exerciseId: 'kb-windmill', sets: 3, targetReps: 8, targetWeight: 10, restSec: 45 },
+      { exerciseId: 'kb-goblet-squat', sets: 4, targetReps: 12, targetWeight: 16, restSec: 60 },
+      { exerciseId: 'kb-turkish-getup', sets: 3, targetReps: 5, targetWeight: 12, restSec: 75 }
+    ]
+  },
+  {
+    id: 'routine-kb-fullbody',
+    title: 'Kettlebell Full-Body Flow & Burn',
+    category: 'Kettlebell',
+    equipmentType: 'Kettlebell',
+    description: 'High-intensity full body kettlebell workout targeting dynamic leg power, shoulder strength, and core stability.',
+    estimatedMinutes: 25,
+    difficulty: 'Beginner',
+    exercises: [
+      { exerciseId: 'kb-goblet-squat', sets: 4, targetReps: 12, targetWeight: 16, restSec: 60 },
+      { exerciseId: 'kb-swings', sets: 4, targetReps: 15, targetWeight: 16, restSec: 45 },
+      { exerciseId: 'kb-clean-press', sets: 3, targetReps: 10, targetWeight: 12, restSec: 60 },
+      { exerciseId: 'kb-high-pull', sets: 3, targetReps: 12, targetWeight: 14, restSec: 45 },
+      { exerciseId: 'kb-windmill', sets: 3, targetReps: 8, targetWeight: 10, restSec: 45 }
+    ]
+  },
+
+  // --- DUMBBELL ROUTINES ---
   {
     id: 'routine-shoulders-back',
     title: 'Shoulders & Back Sculptor',
     category: 'Shoulders & Back',
+    equipmentType: 'Dumbbell',
     description: 'Comprehensive 6-exercise workout targeting overhead press, bent rows, lateral width, single arm balance, rear delts, and trap shrugs.',
     estimatedMinutes: 30,
     difficulty: 'Intermediate',
@@ -19,6 +56,7 @@ export const DEFAULT_ROUTINES = [
     id: 'routine-full-body',
     title: 'Full Body Dumbbell Blast',
     category: 'Full Body',
+    equipmentType: 'Dumbbell',
     description: 'High-yield 6-exercise compound workout covering legs, chest, back, shoulders, arms, and upper trap power.',
     estimatedMinutes: 35,
     difficulty: 'Beginner',
@@ -35,6 +73,7 @@ export const DEFAULT_ROUTINES = [
     id: 'routine-upper-hypertrophy',
     title: 'Upper Body Power & Pump',
     category: 'Upper Body',
+    equipmentType: 'Dumbbell',
     description: '6-exercise hypertrophy sequence hitting Arnold press, single arm row, chest press, lateral raise, bicep curl, and rear delt fly.',
     estimatedMinutes: 32,
     difficulty: 'Intermediate',
@@ -51,6 +90,7 @@ export const DEFAULT_ROUTINES = [
     id: 'routine-arms-core',
     title: 'Arm & Core Annihilator',
     category: 'Arms & Core',
+    equipmentType: 'Dumbbell',
     description: 'Direct arm isolation and core rotation routine featuring bicep curls, hammer curls, tricep extensions, and Russian twists.',
     estimatedMinutes: 28,
     difficulty: 'Beginner',
@@ -67,6 +107,7 @@ export const DEFAULT_ROUTINES = [
     id: 'routine-legs-lower',
     title: 'Leg & Lower Body Hammer',
     category: 'Legs & Lower Body',
+    equipmentType: 'Dumbbell',
     description: 'Targeted lower body leg workout with goblet squats, Romanian deadlifts, forward lunges, and calf/glute focus.',
     estimatedMinutes: 30,
     difficulty: 'Intermediate',
@@ -83,6 +124,7 @@ export const DEFAULT_ROUTINES = [
     id: 'routine-chest-shoulders',
     title: 'Chest & Shoulder Builder',
     category: 'Chest & Shoulders',
+    equipmentType: 'Dumbbell',
     description: 'Upper body pushing workout focusing on heavy chest press, Arnold press, chest flyes, lateral raises, and trap shrugs.',
     estimatedMinutes: 32,
     difficulty: 'Intermediate',

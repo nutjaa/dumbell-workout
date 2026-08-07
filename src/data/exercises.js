@@ -1,8 +1,165 @@
 export const EXERCISES = [
+  // --- KETTLEBELL EXERCISES SECTION ---
+  {
+    id: 'kb-swings',
+    name: 'Kettlebell Russian Swings',
+    category: 'Kettlebell',
+    equipmentType: 'Kettlebell',
+    difficulty: 'Intermediate',
+    equipment: 'Single Kettlebell',
+    targetMuscles: ['Hamstrings', 'Gluteus Maximus', 'Core'],
+    secondaryMuscles: ['Latissimus Dorsi', 'Lower Back', 'Shoulders'],
+    description: 'Dynamic ballistic hip-hinge exercise for explosive power, posterior chain conditioning, and cardio fat burn.',
+    steps: [
+      'Stand feet slightly wider than shoulder-width, kettlebell on floor in front of you.',
+      'Hinge at hips, grip kettlebell handle with both hands, and hike it back between your legs.',
+      'Snap hips forward explosively, driving kettlebell up to chest height while squeezing glutes tight.',
+      'Guide weight back down into hip hinge stretch and repeat in a continuous fluid rhythm.'
+    ],
+    formTips: [
+      'Power comes from explosive hip snap, NOT lifting with your arms.',
+      'Keep back flat and core packed throughout.'
+    ],
+    defaultSets: 4,
+    defaultReps: 15,
+    defaultWeight: 16,
+    defaultRestSec: 45,
+    animationType: 'kettlebell_swing'
+  },
+  {
+    id: 'kb-turkish-getup',
+    name: 'Kettlebell Turkish Get-Up',
+    category: 'Kettlebell',
+    equipmentType: 'Kettlebell',
+    difficulty: 'Advanced',
+    equipment: 'Single Kettlebell',
+    targetMuscles: ['Shoulder Stability', 'Core / Abs', 'Glutes'],
+    secondaryMuscles: ['Triceps', 'Quadriceps', 'Forearms'],
+    description: 'Full-body movement transitioning from lying to standing while locking a kettlebell overhead.',
+    steps: [
+      'Lie on floor holding kettlebell locked vertically overhead in right hand, right knee bent.',
+      'Roll onto left elbow, press up onto left hand.',
+      'Sweep left leg under body into a low kneeling position.',
+      'Lunge up to standing position while maintaining vertical overhead arm lock.',
+      'Reverse all steps under control back to starting position on floor.'
+    ],
+    formTips: [
+      'Keep your eyes locked on the kettlebell overhead at all times.',
+      'Move slowly and deliberately.'
+    ],
+    defaultSets: 3,
+    defaultReps: 5,
+    defaultWeight: 12,
+    defaultRestSec: 75,
+    animationType: 'turkish_getup'
+  },
+  {
+    id: 'kb-clean-press',
+    name: 'Kettlebell Clean & Press',
+    category: 'Kettlebell',
+    equipmentType: 'Kettlebell',
+    difficulty: 'Intermediate',
+    equipment: 'Single or Pair of Kettlebells',
+    targetMuscles: ['Anterior Deltoids', 'Latissimus Dorsi'],
+    secondaryMuscles: ['Triceps', 'Core', 'Glutes'],
+    description: 'Combines a hip clean into the rack position followed by a strict overhead shoulder press.',
+    steps: [
+      'Hinge and swing kettlebell back between legs, then snap hips to clean it into forearm rack position.',
+      'Keep elbow tucked into ribs in rack position.',
+      'Press kettlebell straight overhead until elbow is fully locked out.',
+      'Lower back to rack position and drop into swing for next rep.'
+    ],
+    formTips: [
+      'Tuck elbow close to chest to avoid bell slamming onto forearm.'
+    ],
+    defaultSets: 4,
+    defaultReps: 10,
+    defaultWeight: 14,
+    defaultRestSec: 60,
+    animationType: 'clean_press'
+  },
+  {
+    id: 'kb-high-pull',
+    name: 'Kettlebell Sumo High Pull',
+    category: 'Kettlebell',
+    equipmentType: 'Kettlebell',
+    difficulty: 'Intermediate',
+    equipment: 'Single Kettlebell',
+    targetMuscles: ['Upper Trapezius', 'Hamstrings', 'Shoulders'],
+    secondaryMuscles: ['Glutes', 'Biceps', 'Forearms'],
+    description: 'Explosive hip drive pulling kettlebell up to chest height with elbows high and wide.',
+    steps: [
+      'Stand in wide sumo stance with kettlebell between feet.',
+      'Squat/hinge down and grip handle with both hands.',
+      'Drive upward through heels explosively, pulling kettlebell to upper chest level with elbows high.',
+      'Lower under control back to floor and repeat.'
+    ],
+    formTips: [
+      'Lead with your elbows high above your wrists at peak height.'
+    ],
+    defaultSets: 3,
+    defaultReps: 12,
+    defaultWeight: 16,
+    defaultRestSec: 60,
+    animationType: 'high_pull'
+  },
+  {
+    id: 'kb-windmill',
+    name: 'Kettlebell Windmill',
+    category: 'Kettlebell',
+    equipmentType: 'Kettlebell',
+    difficulty: 'Intermediate',
+    equipment: 'Single Kettlebell',
+    targetMuscles: ['Obliques', 'Shoulder Rotator Cuff', 'Hamstrings'],
+    secondaryMuscles: ['Glutes', 'Lower Back'],
+    description: 'Rotational hip hinge with locked arm overhead, enhancing shoulder stability and lateral core flexibility.',
+    steps: [
+      'Press kettlebell overhead in right hand, turn feet 45 degrees to the left.',
+      'Keep right arm locked out overhead, hinge right hip back.',
+      'Slide left hand down inside left leg toward floor while looking up at kettlebell.',
+      'Contract right oblique and glute to stand back up to starting position.'
+    ],
+    formTips: [
+      'Keep back straight and loaded hip pushed rearward.'
+    ],
+    defaultSets: 3,
+    defaultReps: 8,
+    defaultWeight: 10,
+    defaultRestSec: 45,
+    animationType: 'windmill'
+  },
+  {
+    id: 'kb-goblet-squat',
+    name: 'Kettlebell Goblet Squat',
+    category: 'Kettlebell',
+    equipmentType: 'Kettlebell',
+    difficulty: 'Beginner',
+    equipment: 'Single Kettlebell',
+    targetMuscles: ['Quadriceps', 'Gluteus Maximus'],
+    secondaryMuscles: ['Hamstrings', 'Core', 'Upper Back'],
+    description: 'Deep squat holding kettlebell by the horns at chest level to build quad strength and hip mobility.',
+    steps: [
+      'Hold kettlebell by the horns close to chest.',
+      'Stand feet shoulder-width apart, toes turned out 15 degrees.',
+      'Squat down between knees keeping chest high and elbows inside knees.',
+      'Drive through heels to stand fully upright.'
+    ],
+    formTips: [
+      'Keep chest upright and weight centered through mid-foot.'
+    ],
+    defaultSets: 4,
+    defaultReps: 12,
+    defaultWeight: 16,
+    defaultRestSec: 60,
+    animationType: 'goblet_squat'
+  },
+
+  // --- DUMBBELL EXERCISES SECTION ---
   {
     id: 'db-shoulder-press',
     name: 'Dumbbell Overhead Shoulder Press',
     category: 'Shoulders',
+    equipmentType: 'Dumbbell',
     difficulty: 'Beginner',
     equipment: 'Pair of Dumbbells',
     targetMuscles: ['Anterior Deltoids', 'Lateral Deltoids'],
@@ -28,6 +185,7 @@ export const EXERCISES = [
     id: 'db-bent-over-row',
     name: 'Dumbbell Bent-Over Row',
     category: 'Back',
+    equipmentType: 'Dumbbell',
     difficulty: 'Intermediate',
     equipment: 'Pair of Dumbbells',
     targetMuscles: ['Latissimus Dorsi', 'Rhomboids', 'Middle Traps'],
@@ -53,6 +211,7 @@ export const EXERCISES = [
     id: 'db-lateral-raise',
     name: 'Dumbbell Lateral Raise',
     category: 'Shoulders',
+    equipmentType: 'Dumbbell',
     difficulty: 'Beginner',
     equipment: 'Pair of Dumbbells',
     targetMuscles: ['Lateral Deltoids (Side Delts)'],
@@ -78,6 +237,7 @@ export const EXERCISES = [
     id: 'db-single-arm-row',
     name: 'Single-Arm Dumbbell Row',
     category: 'Back',
+    equipmentType: 'Dumbbell',
     difficulty: 'Beginner',
     equipment: 'Single Dumbbell & Bench',
     targetMuscles: ['Latissimus Dorsi', 'Rhomboids'],
@@ -103,6 +263,7 @@ export const EXERCISES = [
     id: 'db-reverse-fly',
     name: 'Dumbbell Reverse Rear-Delt Fly',
     category: 'Shoulders',
+    equipmentType: 'Dumbbell',
     difficulty: 'Intermediate',
     equipment: 'Pair of Dumbbells',
     targetMuscles: ['Rear Deltoids', 'Rhomboids'],
@@ -128,6 +289,7 @@ export const EXERCISES = [
     id: 'db-arnold-press',
     name: 'Arnold Dumbbell Press',
     category: 'Shoulders',
+    equipmentType: 'Dumbbell',
     difficulty: 'Intermediate',
     equipment: 'Pair of Dumbbells',
     targetMuscles: ['Anterior Deltoids', 'Lateral Deltoids'],
@@ -152,6 +314,7 @@ export const EXERCISES = [
     id: 'db-shrugs',
     name: 'Dumbbell Trap Shrugs',
     category: 'Shoulders',
+    equipmentType: 'Dumbbell',
     difficulty: 'Beginner',
     equipment: 'Pair of Heavy Dumbbells',
     targetMuscles: ['Upper Trapezius'],
@@ -176,6 +339,7 @@ export const EXERCISES = [
     id: 'db-pullover',
     name: 'Dumbbell Back Pullover',
     category: 'Back',
+    equipmentType: 'Dumbbell',
     difficulty: 'Intermediate',
     equipment: 'Single Dumbbell & Bench',
     targetMuscles: ['Latissimus Dorsi', 'Serratus Anterior'],
@@ -199,6 +363,7 @@ export const EXERCISES = [
     id: 'db-renegade-row',
     name: 'Dumbbell Renegade Row',
     category: 'Back',
+    equipmentType: 'Dumbbell',
     difficulty: 'Advanced',
     equipment: 'Pair of Hex Dumbbells',
     targetMuscles: ['Latissimus Dorsi', 'Core / Abs'],
@@ -222,6 +387,7 @@ export const EXERCISES = [
     id: 'db-bicep-curl',
     name: 'Dumbbell Bicep Curls',
     category: 'Arms',
+    equipmentType: 'Dumbbell',
     difficulty: 'Beginner',
     equipment: 'Pair of Dumbbells',
     targetMuscles: ['Biceps Brachii'],
@@ -245,6 +411,7 @@ export const EXERCISES = [
     id: 'db-hammer-curl',
     name: 'Dumbbell Hammer Curls',
     category: 'Arms',
+    equipmentType: 'Dumbbell',
     difficulty: 'Beginner',
     equipment: 'Pair of Dumbbells',
     targetMuscles: ['Brachialis', 'Forearms'],
@@ -268,6 +435,7 @@ export const EXERCISES = [
     id: 'db-tricep-extension',
     name: 'Overhead Dumbbell Tricep Extension',
     category: 'Arms',
+    equipmentType: 'Dumbbell',
     difficulty: 'Beginner',
     equipment: 'Single Heavy Dumbbell',
     targetMuscles: ['Triceps (Long Head)'],
@@ -291,6 +459,7 @@ export const EXERCISES = [
     id: 'db-floor-chest-press',
     name: 'Dumbbell Floor/Bench Chest Press',
     category: 'Chest',
+    equipmentType: 'Dumbbell',
     difficulty: 'Beginner',
     equipment: 'Pair of Dumbbells',
     targetMuscles: ['Pectoralis Major', 'Anterior Deltoid'],
@@ -314,6 +483,7 @@ export const EXERCISES = [
     id: 'db-chest-fly',
     name: 'Dumbbell Chest Flyes',
     category: 'Chest',
+    equipmentType: 'Dumbbell',
     difficulty: 'Intermediate',
     equipment: 'Pair of Dumbbells',
     targetMuscles: ['Pectoralis Major'],
@@ -337,6 +507,7 @@ export const EXERCISES = [
     id: 'db-goblet-squat',
     name: 'Dumbbell Goblet Squat',
     category: 'Legs',
+    equipmentType: 'Dumbbell',
     difficulty: 'Beginner',
     equipment: 'Single Dumbbell',
     targetMuscles: ['Quadriceps', 'Gluteus Maximus'],
@@ -361,6 +532,7 @@ export const EXERCISES = [
     id: 'db-romanian-deadlift',
     name: 'Dumbbell Romanian Deadlift (RDL)',
     category: 'Legs',
+    equipmentType: 'Dumbbell',
     difficulty: 'Intermediate',
     equipment: 'Pair of Dumbbells',
     targetMuscles: ['Hamstrings', 'Gluteus Maximus'],
@@ -384,6 +556,7 @@ export const EXERCISES = [
     id: 'db-lunges',
     name: 'Walking / Stationary Dumbbell Lunges',
     category: 'Legs',
+    equipmentType: 'Dumbbell',
     difficulty: 'Beginner',
     equipment: 'Pair of Dumbbells',
     targetMuscles: ['Quadriceps', 'Glutes', 'Hamstrings'],
@@ -407,6 +580,7 @@ export const EXERCISES = [
     id: 'db-russian-twist',
     name: 'Dumbbell Russian Twists',
     category: 'Core',
+    equipmentType: 'Dumbbell',
     difficulty: 'Beginner',
     equipment: 'Single Dumbbell',
     targetMuscles: ['Obliques', 'Abs'],
@@ -428,4 +602,5 @@ export const EXERCISES = [
   }
 ];
 
-export const MUSCLE_CATEGORIES = ['All', 'Shoulders', 'Back', 'Chest', 'Arms', 'Legs', 'Core'];
+export const EQUIPMENT_TYPES = ['All', 'Dumbbell', 'Kettlebell'];
+export const MUSCLE_CATEGORIES = ['All', 'Kettlebell', 'Shoulders', 'Back', 'Chest', 'Arms', 'Legs', 'Core'];

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, CheckCircle2, FastForward, Plus, Pause, RotateCcw, Award, Dumbbell, Clock, Flame, ChevronRight, Volume2, ShieldCheck, ArrowRight } from 'lucide-react';
+import { Play, CheckCircle2, FastForward, Plus, Pause, RotateCcw, Award, Dumbbell, Clock, Flame, ChevronRight, Volume2, ShieldCheck, ArrowRight, Sparkles } from 'lucide-react';
 import { EXERCISES } from '../data/exercises';
 import { ExerciseVisualizer } from './ExerciseVisualizer';
 import { sound } from '../utils/sound';
@@ -10,6 +10,7 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
   const [activeRoutine, setActiveRoutine] = useState(null);
   const [currentExIndex, setCurrentExIndex] = useState(0);
   const [currentSet, setCurrentSet] = useState(1);
+  const [equipmentFilter, setEquipmentFilter] = useState('All');
   
   // Interactive Live Values for active set
   const [liveReps, setLiveReps] = useState(10);
@@ -115,22 +116,18 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
     setCompletedSetsCount((prev) => prev + 1);
 
     if (currentSet < setsTotal) {
-      // Start rest period before next set of same exercise
       setRestSecondsLeft(restTime);
       setIsResting(true);
       setIsRestPaused(false);
     } else if (currentExIndex < activeRoutine.exercises.length - 1) {
-      // Last set of exercise: start rest before switching to next exercise
       setRestSecondsLeft(restTime);
       setIsResting(true);
       setIsRestPaused(false);
     } else {
-      // Workout Fully Completed!
       finishWorkoutSession();
     }
   };
 
-  // Finishing rest period -> proceed to next set or exercise
   const finishRestPeriod = () => {
     sound.playRestOver();
     setIsResting(false);
@@ -141,7 +138,6 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
     if (currentSet < setsTotal) {
       setCurrentSet((prev) => prev + 1);
     } else {
-      // Move to next exercise
       const nextIdx = currentExIndex + 1;
       setCurrentExIndex(nextIdx);
       setCurrentSet(1);
@@ -188,75 +184,113 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
     return `${m}:${s < 10 ? '0' : ''}${s}`;
   };
 
+  // Filter routines by Equipment
+  const filteredRoutines = routines.filter((r) => {
+    if (equipmentFilter === 'All') return true;
+    return r.equipmentType === equipmentFilter || r.category === equipmentFilter;
+  });
+
   // --- VIEW 1: ROUTINE SELECTION LIST ---
   if (!activeRoutine) {
     return (
       <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="text-center max-w-2xl mx-auto mb-10">
+        <div className="text-center max-w-2xl mx-auto mb-8">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight font-['Outfit'] mb-3">
-            Select Your <span className="text-cyan-400">Dumbbell Routine</span>
+            Select Your <span className="text-cyan-400">Workout Routine</span>
           </h2>
-          <p className="text-slate-400 text-sm sm:text-base">
-            Choose a guided dumbbell workout routine below to launch interactive step-by-step set tracking and rest timers.
+          <p className="text-slate-400 text-sm sm:text-base mb-6">
+            Choose a guided dumbbell or kettlebell workout routine to launch live set tracking and rest timers.
           </p>
+
+          {/* Equipment Filter Selector */}
+          <div className="inline-flex items-center gap-1.5 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800 shadow-xl">
+            {['All', 'Dumbbell', 'Kettlebell'].map((eq) => (
+              <button
+                key={eq}
+                onClick={() => setEquipmentFilter(eq)}
+                className={`px-5 py-2 rounded-xl text-xs font-bold transition-all ${
+                  equipmentFilter === eq
+                    ? eq === 'Kettlebell'
+                      ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-slate-950 shadow-md shadow-orange-500/25'
+                      : 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md shadow-cyan-500/25'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                {eq === 'All' ? '⚡ All Workouts' : eq === 'Kettlebell' ? '🔔 Kettlebell' : '🏋️ Dumbbell'}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {routines.map((routine) => (
-            <div
-              key={routine.id}
-              className="group relative flex flex-col justify-between rounded-3xl bg-slate-900/60 border border-slate-800 p-6 backdrop-blur-xl hover:border-cyan-500/50 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300"
-            >
-              <div>
-                <div className="flex items-center justify-between gap-2 mb-3">
-                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
-                    {routine.category}
-                  </span>
-                  <span className="flex items-center gap-1 text-xs text-slate-400">
-                    <Clock className="w-3.5 h-3.5" />
-                    ~{routine.estimatedMinutes} mins
-                  </span>
-                </div>
-
-                <h3 className="text-xl font-bold text-white font-['Outfit'] mb-2 group-hover:text-cyan-300 transition-colors">
-                  {routine.title}
-                </h3>
-                <p className="text-xs text-slate-400 leading-relaxed mb-4">
-                  {routine.description}
-                </p>
-
-                <div className="border-t border-slate-800/80 pt-3 mb-6">
-                  <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">
-                    Exercises ({routine.exercises.length}):
-                  </p>
-                  <ul className="space-y-1.5">
-                    {routine.exercises.map((item, idx) => {
-                      const exData = EXERCISES.find((e) => e.id === item.exerciseId);
-                      return (
-                        <li key={idx} className="flex items-center justify-between text-xs text-slate-300">
-                          <span className="truncate max-w-[180px]">{exData ? exData.name : item.exerciseId}</span>
-                          <span className="text-slate-500 font-mono">{item.sets} x {item.targetReps}</span>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              </div>
-
-              <button
-                onClick={() => startWorkout(routine)}
-                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-sm shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all"
+          {filteredRoutines.map((routine) => {
+            const isKB = routine.equipmentType === 'Kettlebell' || routine.category === 'Kettlebell';
+            return (
+              <div
+                key={routine.id}
+                className="group relative flex flex-col justify-between rounded-3xl bg-slate-900/60 border border-slate-800 p-6 backdrop-blur-xl hover:border-cyan-500/50 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300"
               >
-                <Play className="w-4 h-4 fill-white" />
-                Start Interactive Workout
-              </button>
-            </div>
-          ))}
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-bold border ${
+                        isKB
+                          ? 'bg-orange-500/10 text-orange-400 border-orange-500/30'
+                          : 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20'
+                      }`}
+                    >
+                      {isKB ? '🔔 Kettlebell' : routine.category}
+                    </span>
+                    <span className="flex items-center gap-1 text-xs text-slate-400">
+                      <Clock className="w-3.5 h-3.5" />
+                      ~{routine.estimatedMinutes} mins
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl font-bold text-white font-['Outfit'] mb-2 group-hover:text-cyan-300 transition-colors">
+                    {routine.title}
+                  </h3>
+                  <p className="text-xs text-slate-400 leading-relaxed mb-4">
+                    {routine.description}
+                  </p>
+
+                  <div className="border-t border-slate-800/80 pt-3 mb-6">
+                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">
+                      Exercises ({routine.exercises.length}):
+                    </p>
+                    <ul className="space-y-1.5">
+                      {routine.exercises.map((item, idx) => {
+                        const exData = EXERCISES.find((e) => e.id === item.exerciseId);
+                        return (
+                          <li key={idx} className="flex items-center justify-between text-xs text-slate-300">
+                            <span className="truncate max-w-[180px]">{exData ? exData.name : item.exerciseId}</span>
+                            <span className="text-slate-500 font-mono">{item.sets} x {item.targetReps}</span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => startWorkout(routine)}
+                  className={`w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-sm shadow-lg transition-all ${
+                    isKB
+                      ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-slate-950 shadow-orange-500/20 hover:shadow-orange-500/40'
+                      : 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-cyan-500/20 hover:shadow-cyan-500/40'
+                  }`}
+                >
+                  <Play className={`w-4 h-4 ${isKB ? 'fill-slate-950' : 'fill-white'}`} />
+                  Start Interactive Workout
+                </button>
+              </div>
+            );
+          })}
         </div>
 
         {/* Custom Builder Prompt Card */}
         <div className="mt-10 rounded-2xl bg-slate-900/40 border border-dashed border-slate-800 p-6 text-center">
-          <p className="text-slate-300 text-sm font-medium mb-3">Want to craft a tailored dumbbell workout?</p>
+          <p className="text-slate-300 text-sm font-medium mb-3">Want to craft a custom workout sequence?</p>
           <button
             onClick={onNavigateToBuilder}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-cyan-400 font-semibold text-sm transition-all"
@@ -330,22 +364,13 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
     return (
       <div className="max-w-3xl mx-auto px-4 py-8 text-center">
         <div className="rounded-3xl bg-slate-900/90 border border-cyan-500/40 p-8 backdrop-blur-2xl shadow-2xl relative overflow-hidden">
-          {/* Glowing Rest Header */}
           <span className="px-4 py-1.5 rounded-full text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 uppercase tracking-widest inline-block mb-4">
             Rest Interval
           </span>
 
-          {/* Large Animated Countdown Ring */}
           <div className="relative w-48 h-48 mx-auto my-6 flex items-center justify-center">
             <svg className="w-full h-full transform -rotate-90">
-              <circle
-                cx="96"
-                cy="96"
-                r="88"
-                className="stroke-slate-800"
-                strokeWidth="10"
-                fill="transparent"
-              />
+              <circle cx="96" cy="96" r="88" className="stroke-slate-800" strokeWidth="10" fill="transparent" />
               <circle
                 cx="96"
                 cy="96"
@@ -366,7 +391,6 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
             </div>
           </div>
 
-          {/* Timer Controls */}
           <div className="flex items-center justify-center gap-3 mb-8">
             <button
               onClick={() => handleAddRestTime(10)}
@@ -378,22 +402,19 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
             <button
               onClick={() => setIsRestPaused(!isRestPaused)}
               className="p-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-cyan-400 transition-all"
-              title={isRestPaused ? 'Resume Rest' : 'Pause Rest'}
             >
               {isRestPaused ? <Play className="w-5 h-5 fill-cyan-400" /> : <Pause className="w-5 h-5" />}
             </button>
 
-            {/* MANUAL CONTINUE / SKIP REST BUTTON */}
             <button
               onClick={handleSkipRest}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-sm shadow-lg shadow-cyan-500/25 transition-all"
+              className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-sm shadow-lg shadow-cyan-500/25 transition-all"
             >
               Skip Rest & Start Next Set
               <FastForward className="w-4 h-4 fill-white" />
             </button>
           </div>
 
-          {/* Next Up Preview */}
           <div className="border-t border-slate-800/80 pt-6 text-left max-w-md mx-auto">
             <p className="text-xs text-slate-400 uppercase font-semibold tracking-wider mb-2">
               Next Up ({isNextExercise ? 'Next Exercise' : `Set ${nextSetNumber} of ${currentSetsTotal}`}):
@@ -418,7 +439,6 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
   // --- VIEW 4: LIVE SET GUIDED WORKOUT PLAYER ---
   return (
     <div className="max-w-4xl mx-auto px-4 py-6">
-      {/* Top Header Bar with Workout Progress & Stopwatch */}
       <div className="flex items-center justify-between mb-4 bg-slate-900/80 border border-slate-800 rounded-2xl p-4 backdrop-blur-md">
         <div>
           <span className="text-[11px] font-bold text-cyan-400 uppercase tracking-widest">
@@ -444,7 +464,6 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
         </div>
       </div>
 
-      {/* Progress Bar across exercises */}
       <div className="w-full bg-slate-800 h-2 rounded-full mb-6 overflow-hidden">
         <div
           className="bg-gradient-to-r from-cyan-500 to-blue-500 h-full transition-all duration-300"
@@ -452,13 +471,10 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
         />
       </div>
 
-      {/* Main Grid: Visualizer + Set Control Console */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-        {/* Left Column: Motion Visualizer & Form Tips */}
         <div className="md:col-span-6 space-y-4">
           <ExerciseVisualizer animationType={currentEx.animationType} isPlaying={true} />
 
-          {/* Targeted Muscles */}
           <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
             <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Target Muscles</h4>
             <div className="flex flex-wrap gap-1.5">
@@ -470,7 +486,6 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
             </div>
           </div>
 
-          {/* Form Tip */}
           <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
             <h4 className="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
               <ShieldCheck className="w-4 h-4" /> Pro Form Cue
@@ -481,10 +496,8 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
           </div>
         </div>
 
-        {/* Right Column: Set Console & MANUALLY CONTINUE BUTTON */}
         <div className="md:col-span-6 space-y-5">
           <div className="rounded-3xl bg-slate-900/90 border border-slate-800 p-6 backdrop-blur-xl shadow-2xl relative">
-            {/* Set Indicator */}
             <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
               <div>
                 <span className="text-xs text-slate-400 font-medium uppercase tracking-wider">Current Set</span>
@@ -493,7 +506,6 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
                 </div>
               </div>
 
-              {/* Set indicator bubbles */}
               <div className="flex items-center gap-1.5">
                 {Array.from({ length: currentSetsTotal }).map((_, i) => (
                   <div
@@ -510,9 +522,7 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
               </div>
             </div>
 
-            {/* Reps & Weight Adjuster Console */}
             <div className="grid grid-cols-2 gap-4 mb-6">
-              {/* Reps selector */}
               <div className="p-3.5 rounded-2xl bg-slate-950/60 border border-slate-800 text-center">
                 <label className="text-[11px] text-slate-400 uppercase font-semibold tracking-wider block mb-2">Target Reps</label>
                 <div className="flex items-center justify-center gap-3">
@@ -532,7 +542,6 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
                 </div>
               </div>
 
-              {/* Weight selector */}
               <div className="p-3.5 rounded-2xl bg-slate-950/60 border border-slate-800 text-center">
                 <label className="text-[11px] text-slate-400 uppercase font-semibold tracking-wider block mb-2">Weight (kg)</label>
                 <div className="flex items-center justify-center gap-3">
@@ -553,7 +562,6 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
               </div>
             </div>
 
-            {/* MANUAL CONTINUE / COMPLETE SET BUTTON */}
             <button
               onClick={handleCompleteSet}
               className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-base uppercase tracking-wider shadow-xl shadow-emerald-500/20 hover:shadow-emerald-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3"
@@ -567,7 +575,6 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
             </p>
           </div>
 
-          {/* Exercise Steps Accordion/Guide */}
           <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 text-xs">
             <h4 className="font-bold text-white uppercase tracking-wider mb-2">Execution Steps</h4>
             <ol className="list-decimal list-inside space-y-1.5 text-slate-300">
