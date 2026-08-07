@@ -242,6 +242,52 @@ export const EXERCISES = [
     animationType: 'bicep_curl'
   },
   {
+    id: 'db-hammer-curl',
+    name: 'Dumbbell Hammer Curls',
+    category: 'Arms',
+    difficulty: 'Beginner',
+    equipment: 'Pair of Dumbbells',
+    targetMuscles: ['Brachialis', 'Forearms'],
+    secondaryMuscles: ['Biceps Brachii'],
+    description: 'Neutral grip arm curl that builds forearm thickness, grip strength, and arm width.',
+    steps: [
+      'Stand holding dumbbells at your sides with palms facing inward (neutral grip).',
+      'Curl the weights up toward your shoulders keeping palms facing each other.',
+      'Squeeze at top position, then lower under strict control.'
+    ],
+    formTips: [
+      'Maintain neutral wrist alignment throughout.'
+    ],
+    defaultSets: 3,
+    defaultReps: 12,
+    defaultWeight: 10,
+    defaultRestSec: 45,
+    animationType: 'bicep_curl'
+  },
+  {
+    id: 'db-tricep-extension',
+    name: 'Overhead Dumbbell Tricep Extension',
+    category: 'Arms',
+    difficulty: 'Beginner',
+    equipment: 'Single Heavy Dumbbell',
+    targetMuscles: ['Triceps (Long Head)'],
+    secondaryMuscles: ['Shoulders'],
+    description: 'Overhead tricep extension targeting the long head of the tricep for full arm development.',
+    steps: [
+      'Hold a single dumbbell vertically with both hands behind your head.',
+      'Lower weight by bending elbows until forearms touch biceps.',
+      'Extend arms vertically back overhead squeezing triceps at top.'
+    ],
+    formTips: [
+      'Keep elbows pointed forward rather than flaring out wide.'
+    ],
+    defaultSets: 3,
+    defaultReps: 12,
+    defaultWeight: 12,
+    defaultRestSec: 45,
+    animationType: 'overhead_press'
+  },
+  {
     id: 'db-floor-chest-press',
     name: 'Dumbbell Floor/Bench Chest Press',
     category: 'Chest',
@@ -263,6 +309,29 @@ export const EXERCISES = [
     defaultWeight: 16,
     defaultRestSec: 60,
     animationType: 'chest_press'
+  },
+  {
+    id: 'db-chest-fly',
+    name: 'Dumbbell Chest Flyes',
+    category: 'Chest',
+    difficulty: 'Intermediate',
+    equipment: 'Pair of Dumbbells',
+    targetMuscles: ['Pectoralis Major'],
+    secondaryMuscles: ['Anterior Deltoid'],
+    description: 'Horizontal adduction isolation exercise creating chest stretch and inner pectoral definition.',
+    steps: [
+      'Lie flat holding dumbbells over chest with palms facing each other and soft bend in elbows.',
+      'Lower weights out wide to sides in an arc until chest stretches.',
+      'Squeeze chest muscles to bring dumbbells back together over chest.'
+    ],
+    formTips: [
+      'Maintain constant slight elbow bend—do not turn into a press.'
+    ],
+    defaultSets: 3,
+    defaultReps: 12,
+    defaultWeight: 10,
+    defaultRestSec: 45,
+    animationType: 'reverse_fly'
   },
   {
     id: 'db-goblet-squat',
@@ -287,7 +356,76 @@ export const EXERCISES = [
     defaultWeight: 16,
     defaultRestSec: 75,
     animationType: 'goblet_squat'
+  },
+  {
+    id: 'db-romanian-deadlift',
+    name: 'Dumbbell Romanian Deadlift (RDL)',
+    category: 'Legs',
+    difficulty: 'Intermediate',
+    equipment: 'Pair of Dumbbells',
+    targetMuscles: ['Hamstrings', 'Gluteus Maximus'],
+    secondaryMuscles: ['Lower Back (Erector Spinae)', 'Core'],
+    description: 'Hinge exercise targeting the posterior chain, hamstrings stretch, and hip strength.',
+    steps: [
+      'Stand feet hip-width holding dumbbells at front of thighs.',
+      'Hinge back at hips pushing butt rearward with slight knee flex, lowering dumbbells down shins.',
+      'Lower until hamstrings feel full stretch, then contract glutes to return to standing.'
+    ],
+    formTips: [
+      'Keep spine flat and dumbbells close to your legs.'
+    ],
+    defaultSets: 4,
+    defaultReps: 10,
+    defaultWeight: 16,
+    defaultRestSec: 60,
+    animationType: 'bent_over_row'
+  },
+  {
+    id: 'db-lunges',
+    name: 'Walking / Stationary Dumbbell Lunges',
+    category: 'Legs',
+    difficulty: 'Beginner',
+    equipment: 'Pair of Dumbbells',
+    targetMuscles: ['Quadriceps', 'Glutes', 'Hamstrings'],
+    secondaryMuscles: ['Calves', 'Core Balance'],
+    description: 'Unilateral leg builder improving leg strength, balance, and knee stability.',
+    steps: [
+      'Stand tall holding dumbbells at sides.',
+      'Step forward with one leg and lower back knee toward floor until both knees bent at 90 degrees.',
+      'Push off front heel to return to standing, then repeat on opposite leg.'
+    ],
+    formTips: [
+      'Keep front knee aligned over ankle without caving inward.'
+    ],
+    defaultSets: 3,
+    defaultReps: 10,
+    defaultWeight: 10,
+    defaultRestSec: 60,
+    animationType: 'goblet_squat'
+  },
+  {
+    id: 'db-russian-twist',
+    name: 'Dumbbell Russian Twists',
+    category: 'Core',
+    difficulty: 'Beginner',
+    equipment: 'Single Dumbbell',
+    targetMuscles: ['Obliques', 'Abs'],
+    secondaryMuscles: ['Hip Flexors'],
+    description: 'Rotational core stability exercise building strong side waist obliques and abdominal endurance.',
+    steps: [
+      'Sit on floor with knees bent and feet slightly elevated, holding a single dumbbell with both hands.',
+      'Lean torso back slightly at 45 degrees to engage core.',
+      'Rotate your torso side to side, bringing dumbbell near the floor on left and right.'
+    ],
+    formTips: [
+      'Rotate from your ribcage and shoulders rather than just swinging arms.'
+    ],
+    defaultSets: 3,
+    defaultReps: 16,
+    defaultWeight: 8,
+    defaultRestSec: 45,
+    animationType: 'reverse_fly'
   }
 ];
 
-export const MUSCLE_CATEGORIES = ['All', 'Shoulders', 'Back', 'Chest', 'Arms', 'Legs'];
+export const MUSCLE_CATEGORIES = ['All', 'Shoulders', 'Back', 'Chest', 'Arms', 'Legs', 'Core'];
