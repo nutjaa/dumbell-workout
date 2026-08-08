@@ -153,6 +153,60 @@ export const EXERCISES = [
     defaultRestSec: 60,
     animationType: 'goblet_squat'
   },
+  {
+    id: 'kb-snatch',
+    name: 'Kettlebell Single-Arm Snatch',
+    category: 'Kettlebell',
+    equipmentType: 'Kettlebell',
+    difficulty: 'Advanced',
+    equipment: 'Single Kettlebell',
+    targetMuscles: ['Shoulders', 'Glutes', 'Hamstrings'],
+    secondaryMuscles: ['Latissimus Dorsi', 'Core', 'Forearms'],
+    description: 'Explosive single-arm ballistic lift driving kettlebell from between legs directly overhead in one fluid motion.',
+    steps: [
+      'Stand feet shoulder-width apart, kettlebell on floor in front of you.',
+      'Hinge hips, grip kettlebell with one hand, and hike it back between your legs.',
+      'Drive hips forward explosively while keeping the kettlebell path close to your torso.',
+      'Punch hand up under the handle at top of arc to lock out smoothly overhead without banging forearm.',
+      'Guide kettlebell down in front and drop into hip hinge for next rep.'
+    ],
+    formTips: [
+      'Keep bell trajectory close to body line; do not swing it out wide.',
+      'Tame the arc by punching through at shoulder level.'
+    ],
+    defaultSets: 4,
+    defaultReps: 10,
+    defaultWeight: 14,
+    defaultRestSec: 60,
+    animationType: 'kettlebell_snatch'
+  },
+  {
+    id: 'kb-halo',
+    name: 'Kettlebell Halo',
+    category: 'Kettlebell',
+    equipmentType: 'Kettlebell',
+    difficulty: 'Beginner',
+    equipment: 'Single Kettlebell',
+    targetMuscles: ['Shoulder Stability', 'Core / Abs'],
+    secondaryMuscles: ['Upper Back', 'Triceps', 'Forearms'],
+    description: 'Fluid rotational movement circling kettlebell around head to develop shoulder mobility and core control.',
+    steps: [
+      'Stand feet shoulder-width apart, hold kettlebell upside down (bottoms-up) by the horns close to chest.',
+      'Smoothly circle kettlebell around right side of head, passing handle behind neck.',
+      'Continue around left side of head back to front chest position.',
+      'Maintain tight core and keep hips completely fixed with zero torso rotation.',
+      'Alternate rotation direction each rep.'
+    ],
+    formTips: [
+      'Keep kettlebell close to neck and ears throughout rotation.',
+      'Engage glutes and core to keep lower body anchored.'
+    ],
+    defaultSets: 3,
+    defaultReps: 10,
+    defaultWeight: 10,
+    defaultRestSec: 45,
+    animationType: 'kettlebell_halo'
+  },
 
   // --- DUMBBELL EXERCISES SECTION ---
   {

@@ -344,6 +344,59 @@ export const ExerciseVisualizer = ({ animationType, isPlaying = true, className 
             break;
           }
 
+          case 'kettlebell_snatch': {
+            const headY = 65;
+            drawHead(centerX, headY);
+
+            ctx.beginPath();
+            ctx.moveTo(centerX, headY + 14);
+            ctx.lineTo(centerX, 150);
+            ctx.lineTo(centerX - 20, 220);
+            ctx.moveTo(centerX, 150);
+            ctx.lineTo(centerX + 20, 220);
+            ctx.strokeStyle = bodyColor;
+            ctx.stroke();
+
+            const handY = 160 - progress * 125;
+            ctx.beginPath();
+            ctx.moveTo(centerX + 15, headY + 25);
+            ctx.lineTo(centerX + 20, handY);
+            ctx.strokeStyle = accentNeon;
+            ctx.stroke();
+
+            drawKettlebell(centerX + 20, handY - 5, 0);
+            break;
+          }
+
+          case 'kettlebell_halo': {
+            const headY = 65;
+            drawHead(centerX, headY);
+
+            ctx.beginPath();
+            ctx.moveTo(centerX, headY + 14);
+            ctx.lineTo(centerX, 150);
+            ctx.lineTo(centerX - 20, 220);
+            ctx.moveTo(centerX, 150);
+            ctx.lineTo(centerX + 20, 220);
+            ctx.strokeStyle = bodyColor;
+            ctx.stroke();
+
+            const haloAngle = progress * Math.PI * 2;
+            const haloX = centerX + Math.cos(haloAngle) * 26;
+            const haloY = headY + Math.sin(haloAngle) * 14;
+
+            ctx.beginPath();
+            ctx.moveTo(centerX - 15, headY + 25);
+            ctx.lineTo(haloX, haloY);
+            ctx.moveTo(centerX + 15, headY + 25);
+            ctx.lineTo(haloX, haloY);
+            ctx.strokeStyle = accentNeon;
+            ctx.stroke();
+
+            drawKettlebell(haloX, haloY, 0, 9);
+            break;
+          }
+
           case 'high_pull': {
             const pullY = 160 - progress * 70;
             const elbowY = pullY - 15;
