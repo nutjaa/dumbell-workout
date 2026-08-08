@@ -1,7 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Camera, Eye, Layers } from 'lucide-react';
 
 export const ExerciseVisualizer = ({ animationType, isPlaying = true, className = '' }) => {
   const canvasRef = useRef(null);
+  const [viewAngle, setViewAngle] = useState('front'); // 'front', 'side', '3d'
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -20,13 +22,12 @@ export const ExerciseVisualizer = ({ animationType, isPlaying = true, className 
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Canvas dimensions & styling
       const w = canvas.width;
       const h = canvas.height;
       const centerX = w / 2;
       const centerY = h / 2;
 
-      // Glow backdrop
+      // Radial Glow Backdrop
       const grad = ctx.createRadialGradient(centerX, centerY, 10, centerX, centerY, w * 0.45);
       grad.addColorStop(0, 'rgba(6, 182, 212, 0.12)');
       grad.addColorStop(1, 'rgba(15, 23, 42, 0)');
@@ -44,7 +45,7 @@ export const ExerciseVisualizer = ({ animationType, isPlaying = true, className 
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
 
-      // Helper function to draw stick figure torso & head
+      // Helper function to draw stick figure head
       const drawHead = (x, y, r = 14) => {
         ctx.beginPath();
         ctx.arc(x, y, r, 0, Math.PI * 2);
@@ -57,14 +58,12 @@ export const ExerciseVisualizer = ({ animationType, isPlaying = true, className 
         ctx.save();
         ctx.translate(x, y);
         ctx.rotate(angle);
-        // Handle bar
         ctx.strokeStyle = '#cbd5e1';
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(-size, 0);
         ctx.lineTo(size, 0);
         ctx.stroke();
-        // Weights
         ctx.fillStyle = dumbbellColor;
         ctx.shadowColor = dumbbellColor;
         ctx.shadowBlur = 8;
@@ -73,20 +72,16 @@ export const ExerciseVisualizer = ({ animationType, isPlaying = true, className 
         ctx.restore();
       };
 
-      // Helper to draw realistic Vector Kettlebell
       const drawKettlebell = (x, y, angle = 0, radius = 11) => {
         ctx.save();
         ctx.translate(x, y);
         ctx.rotate(angle);
-
-        // Handle loop top
         ctx.beginPath();
         ctx.arc(0, -radius * 0.7, radius * 0.7, Math.PI * 0.9, Math.PI * 2.1);
         ctx.strokeStyle = '#e2e8f0';
         ctx.lineWidth = 3.5;
         ctx.stroke();
 
-        // Cast iron main sphere body
         ctx.beginPath();
         ctx.arc(0, radius * 0.4, radius, 0, Math.PI * 2);
         ctx.fillStyle = kbColor;
@@ -97,391 +92,524 @@ export const ExerciseVisualizer = ({ animationType, isPlaying = true, className 
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        // Flat bottom base
         ctx.fillStyle = '#7c2d12';
         ctx.fillRect(-radius * 0.5, radius * 1.1, radius, 3);
-
         ctx.restore();
       };
 
-      // Draw exercise specific poses based on animationType
-      switch (animationType) {
-        case 'kettlebell_swing': {
-          // Ballistic hip hinge swing
-          const swingAngle = -Math.PI / 4 + progress * (Math.PI * 0.65);
-          const headX = centerX - 10 + Math.cos(swingAngle) * 5;
-          const headY = 70 + Math.sin(swingAngle) * 10;
-          drawHead(headX, headY);
+      // -------------------------------------------------------------
+      // MULTI-CAMERA VIEW PROJECTION ROUTINES
+      // -------------------------------------------------------------
 
-          // Hinged Spine & Legs
-          const hipX = centerX - 5;
-          const hipY = 140;
-          ctx.beginPath();
-          ctx.moveTo(headX, headY + 14);
-          ctx.lineTo(hipX, hipY);
-          ctx.lineTo(centerX - 25, 220);
-          ctx.moveTo(hipX, hipY);
-          ctx.lineTo(centerX + 25, 220);
-          ctx.strokeStyle = bodyColor;
-          ctx.stroke();
+      if (viewAngle === 'side') {
+        // === SIDE PROFILE CAMERA VIEW ===
+        ctx.save();
+        // Grid floor line
+        ctx.strokeStyle = '#1e293b';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(30, 220);
+        ctx.lineTo(w - 30, 220);
+        ctx.stroke();
 
-          // Swinging Arm
-          const handX = centerX + Math.cos(swingAngle) * 65;
-          const handY = 135 + Math.sin(swingAngle) * 65;
+        switch (animationType) {
+          case 'bent_over_row':
+          case 'kettlebell_swing': {
+            // Side Profile Hinge: Spine tilted 45 deg, arm pulling back
+            const hingeAngle = -Math.PI / 4 + progress * (Math.PI * 0.5);
+            const headX = centerX - 30;
+            const headY = 85;
+            drawHead(headX, headY);
 
-          ctx.beginPath();
-          ctx.moveTo(headX, headY + 25);
-          ctx.lineTo(handX, handY);
-          ctx.strokeStyle = accentNeon;
-          ctx.stroke();
+            const hipX = centerX + 25;
+            const hipY = 135;
 
-          drawKettlebell(handX, handY, swingAngle - Math.PI / 2);
-          break;
+            // Spine
+            ctx.beginPath();
+            ctx.moveTo(headX + 10, headY + 10);
+            ctx.lineTo(hipX, hipY);
+            // Legs slightly bent
+            ctx.lineTo(hipX - 10, 220);
+            ctx.moveTo(hipX, hipY);
+            ctx.lineTo(hipX + 15, 220);
+            ctx.strokeStyle = bodyColor;
+            ctx.stroke();
+
+            // Side arm trajectory
+            const handX = centerX - 10 + Math.cos(hingeAngle) * 45;
+            const handY = 140 + Math.sin(hingeAngle) * 45;
+            ctx.beginPath();
+            ctx.moveTo(headX + 5, headY + 20);
+            ctx.lineTo(handX, handY);
+            ctx.strokeStyle = accentNeon;
+            ctx.stroke();
+
+            if (animationType === 'kettlebell_swing') {
+              drawKettlebell(handX, handY, hingeAngle);
+            } else {
+              drawDumbbell(handX, handY, Math.PI / 4);
+            }
+            break;
+          }
+
+          case 'goblet_squat': {
+            // Side Profile Squat (checking knee travel & back posture)
+            const drop = progress * 45;
+            const headX = centerX - 15;
+            const headY = 65 + drop;
+            drawHead(headX, headY);
+
+            const hipX = centerX + 15;
+            const hipY = 140 + drop * 1.1;
+            const kneeX = centerX - 35;
+            const kneeY = 180 + drop * 0.4;
+
+            ctx.beginPath();
+            ctx.moveTo(headX, headY + 14);
+            ctx.lineTo(hipX, hipY);
+            ctx.lineTo(kneeX, kneeY);
+            ctx.lineTo(centerX - 25, 220);
+            ctx.strokeStyle = bodyColor;
+            ctx.stroke();
+
+            // Hands holding weight at chest
+            drawKettlebell(headX - 15, headY + 30, 0, 11);
+            break;
+          }
+
+          default: {
+            // Standard side profile standing press / curl
+            const headY = 65;
+            drawHead(centerX - 10, headY);
+
+            ctx.beginPath();
+            ctx.moveTo(centerX - 10, headY + 14);
+            ctx.lineTo(centerX - 10, 150);
+            ctx.lineTo(centerX - 25, 220);
+            ctx.moveTo(centerX - 10, 150);
+            ctx.lineTo(centerX + 15, 220);
+            ctx.strokeStyle = bodyColor;
+            ctx.stroke();
+
+            const handY = 150 - progress * 80;
+            ctx.beginPath();
+            ctx.moveTo(centerX - 10, headY + 25);
+            ctx.lineTo(centerX + 15, handY);
+            ctx.strokeStyle = accentNeon;
+            ctx.stroke();
+
+            drawDumbbell(centerX + 15, handY, 0);
+            break;
+          }
         }
+        ctx.restore();
+      } else if (viewAngle === '3d') {
+        // === 3D ISOMETRIC PERSPECTIVE CAMERA VIEW ===
+        ctx.save();
+        ctx.translate(20, 15);
+        ctx.scale(0.9, 0.9);
 
-        case 'turkish_getup': {
-          // Standing overhead lockout pose
-          const headY = 65;
-          drawHead(centerX, headY);
+        // 3D Isometric floor grid
+        ctx.strokeStyle = '#1e293b';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(30, 190);
+        ctx.lineTo(130, 230);
+        ctx.lineTo(230, 190);
+        ctx.lineTo(130, 150);
+        ctx.closePath();
+        ctx.stroke();
 
-          ctx.beginPath();
-          ctx.moveTo(centerX, headY + 14);
-          ctx.lineTo(centerX, 150);
-          ctx.lineTo(centerX - 20, 220);
-          ctx.moveTo(centerX, 150);
-          ctx.lineTo(centerX + 20, 220);
-          ctx.strokeStyle = bodyColor;
-          ctx.stroke();
+        const headY = 65;
+        drawHead(centerX + 15, headY);
 
-          // Left hand on hip
-          ctx.beginPath();
-          ctx.moveTo(centerX - 15, headY + 25);
-          ctx.lineTo(centerX - 35, 120);
-          ctx.lineTo(centerX - 15, 140);
-          ctx.stroke();
+        // 3D Torso
+        ctx.beginPath();
+        ctx.moveTo(centerX + 15, headY + 14);
+        ctx.lineTo(centerX + 15, 145);
+        // 3D Legs
+        ctx.lineTo(centerX - 10, 210);
+        ctx.moveTo(centerX + 15, 145);
+        ctx.lineTo(centerX + 35, 210);
+        ctx.strokeStyle = bodyColor;
+        ctx.stroke();
 
-          // Right arm holding kettlebell locked overhead
-          const handY = 40;
-          ctx.beginPath();
-          ctx.moveTo(centerX + 15, headY + 25);
-          ctx.lineTo(centerX + 20, handY);
-          ctx.strokeStyle = accentNeon;
-          ctx.stroke();
+        // 3D Arc Motion
+        const isoArmX1 = centerX - 25 + progress * 20;
+        const isoArmY1 = 120 - progress * 50;
+        const isoArmX2 = centerX + 45 - progress * 15;
+        const isoArmY2 = 120 - progress * 50;
 
-          drawKettlebell(centerX + 20, handY - 10, 0);
-          break;
+        ctx.beginPath();
+        ctx.moveTo(centerX + 5, headY + 25);
+        ctx.lineTo(isoArmX1, isoArmY1);
+        ctx.moveTo(centerX + 25, headY + 25);
+        ctx.lineTo(isoArmX2, isoArmY2);
+        ctx.strokeStyle = accentNeon;
+        ctx.stroke();
+
+        if (animationType.includes('kettlebell')) {
+          drawKettlebell(isoArmX1, isoArmY1, Math.PI / 8);
+        } else {
+          drawDumbbell(isoArmX1, isoArmY1, Math.PI / 8);
+          drawDumbbell(isoArmX2, isoArmY2, -Math.PI / 8);
         }
+        ctx.restore();
+      } else {
+        // === FRONT CAMERA VIEW (DEFAULT) ===
+        switch (animationType) {
+          case 'kettlebell_swing': {
+            const swingAngle = -Math.PI / 4 + progress * (Math.PI * 0.65);
+            const headX = centerX - 10 + Math.cos(swingAngle) * 5;
+            const headY = 70 + Math.sin(swingAngle) * 10;
+            drawHead(headX, headY);
 
-        case 'clean_press': {
-          // Clean into rack then press overhead
-          const isPress = progress > 0.5;
-          const pressFactor = isPress ? (progress - 0.5) * 2 : 0;
-          const headY = 65;
-          drawHead(centerX, headY);
+            const hipX = centerX - 5;
+            const hipY = 140;
+            ctx.beginPath();
+            ctx.moveTo(headX, headY + 14);
+            ctx.lineTo(hipX, hipY);
+            ctx.lineTo(centerX - 25, 220);
+            ctx.moveTo(hipX, hipY);
+            ctx.lineTo(centerX + 25, 220);
+            ctx.strokeStyle = bodyColor;
+            ctx.stroke();
 
-          ctx.beginPath();
-          ctx.moveTo(centerX, headY + 14);
-          ctx.lineTo(centerX, 150);
-          ctx.lineTo(centerX - 20, 220);
-          ctx.moveTo(centerX, 150);
-          ctx.lineTo(centerX + 20, 220);
-          ctx.strokeStyle = bodyColor;
-          ctx.stroke();
+            const handX = centerX + Math.cos(swingAngle) * 65;
+            const handY = 135 + Math.sin(swingAngle) * 65;
 
-          // Right arm pressing from rack y=110 to y=45
-          const handY = 110 - pressFactor * 65;
-          ctx.beginPath();
-          ctx.moveTo(centerX + 15, headY + 25);
-          ctx.lineTo(centerX + 25, handY);
-          ctx.strokeStyle = accentNeon;
-          ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(headX, headY + 25);
+            ctx.lineTo(handX, handY);
+            ctx.strokeStyle = accentNeon;
+            ctx.stroke();
 
-          drawKettlebell(centerX + 25, handY - 5, 0);
-          break;
-        }
+            drawKettlebell(handX, handY, swingAngle - Math.PI / 2);
+            break;
+          }
 
-        case 'high_pull': {
-          // Sumo High Pull (elbows high)
-          const pullY = 160 - progress * 70;
-          const elbowY = pullY - 15;
-          const headY = 65;
-          drawHead(centerX, headY);
+          case 'turkish_getup': {
+            const headY = 65;
+            drawHead(centerX, headY);
 
-          // Wide sumo legs
-          ctx.beginPath();
-          ctx.moveTo(centerX, headY + 14);
-          ctx.lineTo(centerX, 145);
-          ctx.lineTo(centerX - 35, 220);
-          ctx.moveTo(centerX, 145);
-          ctx.lineTo(centerX + 35, 220);
-          ctx.strokeStyle = bodyColor;
-          ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(centerX, headY + 14);
+            ctx.lineTo(centerX, 150);
+            ctx.lineTo(centerX - 20, 220);
+            ctx.moveTo(centerX, 150);
+            ctx.lineTo(centerX + 20, 220);
+            ctx.strokeStyle = bodyColor;
+            ctx.stroke();
 
-          // Arms pulling up with high elbows
-          ctx.beginPath();
-          ctx.moveTo(centerX - 15, headY + 20);
-          ctx.lineTo(centerX - 30, elbowY);
-          ctx.lineTo(centerX, pullY);
+            ctx.beginPath();
+            ctx.moveTo(centerX - 15, headY + 25);
+            ctx.lineTo(centerX - 35, 120);
+            ctx.lineTo(centerX - 15, 140);
+            ctx.stroke();
 
-          ctx.moveTo(centerX + 15, headY + 20);
-          ctx.lineTo(centerX + 30, elbowY);
-          ctx.lineTo(centerX, pullY);
-          ctx.strokeStyle = accentNeon;
-          ctx.stroke();
+            const handY = 40;
+            ctx.beginPath();
+            ctx.moveTo(centerX + 15, headY + 25);
+            ctx.lineTo(centerX + 20, handY);
+            ctx.strokeStyle = accentNeon;
+            ctx.stroke();
 
-          drawKettlebell(centerX, pullY + 15, 0);
-          break;
-        }
+            drawKettlebell(centerX + 20, handY - 10, 0);
+            break;
+          }
 
-        case 'windmill': {
-          // Windmill hinge with arm locked overhead
-          const bendAngle = progress * (Math.PI / 4);
-          const headX = centerX - Math.sin(bendAngle) * 30;
-          const headY = 70 + Math.cos(bendAngle) * 20;
-          drawHead(headX, headY);
+          case 'clean_press': {
+            const isPress = progress > 0.5;
+            const pressFactor = isPress ? (progress - 0.5) * 2 : 0;
+            const headY = 65;
+            drawHead(centerX, headY);
 
-          // Spine bent to left
-          const hipX = centerX + 15;
-          const hipY = 145;
-          ctx.beginPath();
-          ctx.moveTo(headX, headY + 14);
-          ctx.lineTo(hipX, hipY);
-          ctx.lineTo(centerX - 25, 220);
-          ctx.moveTo(hipX, hipY);
-          ctx.lineTo(centerX + 25, 220);
-          ctx.strokeStyle = bodyColor;
-          ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(centerX, headY + 14);
+            ctx.lineTo(centerX, 150);
+            ctx.lineTo(centerX - 20, 220);
+            ctx.moveTo(centerX, 150);
+            ctx.lineTo(centerX + 20, 220);
+            ctx.strokeStyle = bodyColor;
+            ctx.stroke();
 
-          // Locked overhead arm
-          const handX = centerX + 20;
-          const handY = 40;
-          ctx.beginPath();
-          ctx.moveTo(headX + 10, headY + 10);
-          ctx.lineTo(handX, handY);
-          ctx.strokeStyle = accentNeon;
-          ctx.stroke();
+            const handY = 110 - pressFactor * 65;
+            ctx.beginPath();
+            ctx.moveTo(centerX + 15, headY + 25);
+            ctx.lineTo(centerX + 25, handY);
+            ctx.strokeStyle = accentNeon;
+            ctx.stroke();
 
-          drawKettlebell(handX, handY - 10, 0);
-          break;
-        }
+            drawKettlebell(centerX + 25, handY - 5, 0);
+            break;
+          }
 
-        case 'overhead_press': {
-          // Standing figure pressing overhead
-          const headY = 65;
-          drawHead(centerX, headY);
+          case 'high_pull': {
+            const pullY = 160 - progress * 70;
+            const elbowY = pullY - 15;
+            const headY = 65;
+            drawHead(centerX, headY);
 
-          // Torso
-          ctx.beginPath();
-          ctx.moveTo(centerX, headY + 14);
-          ctx.lineTo(centerX, 150);
-          ctx.strokeStyle = bodyColor;
-          ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(centerX, headY + 14);
+            ctx.lineTo(centerX, 145);
+            ctx.lineTo(centerX - 35, 220);
+            ctx.moveTo(centerX, 145);
+            ctx.lineTo(centerX + 35, 220);
+            ctx.strokeStyle = bodyColor;
+            ctx.stroke();
 
-          // Legs
-          ctx.beginPath();
-          ctx.moveTo(centerX, 150);
-          ctx.lineTo(centerX - 25, 220);
-          ctx.moveTo(centerX, 150);
-          ctx.lineTo(centerX + 25, 220);
-          ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(centerX - 15, headY + 20);
+            ctx.lineTo(centerX - 30, elbowY);
+            ctx.lineTo(centerX, pullY);
 
-          // Arms moving overhead (shoulder level y=100 up to y=45)
-          const handY = 100 - progress * 55;
-          const elbowY = 105 - progress * 40;
-          const leftElbowX = centerX - 35 + progress * 10;
-          const rightElbowX = centerX + 35 - progress * 10;
+            ctx.moveTo(centerX + 15, headY + 20);
+            ctx.lineTo(centerX + 30, elbowY);
+            ctx.lineTo(centerX, pullY);
+            ctx.strokeStyle = accentNeon;
+            ctx.stroke();
 
-          // Left arm
-          ctx.beginPath();
-          ctx.moveTo(centerX - 15, headY + 25);
-          ctx.lineTo(leftElbowX, elbowY);
-          ctx.lineTo(centerX - 30, handY);
-          ctx.strokeStyle = accentNeon;
-          ctx.stroke();
+            drawKettlebell(centerX, pullY + 15, 0);
+            break;
+          }
 
-          // Right arm
-          ctx.beginPath();
-          ctx.moveTo(centerX + 15, headY + 25);
-          ctx.lineTo(rightElbowX, elbowY);
-          ctx.lineTo(centerX + 30, handY);
-          ctx.stroke();
+          case 'windmill': {
+            const bendAngle = progress * (Math.PI / 4);
+            const headX = centerX - Math.sin(bendAngle) * 30;
+            const headY = 70 + Math.cos(bendAngle) * 20;
+            drawHead(headX, headY);
 
-          // Dumbbells
-          drawDumbbell(centerX - 30, handY);
-          drawDumbbell(centerX + 30, handY);
-          break;
-        }
+            const hipX = centerX + 15;
+            const hipY = 145;
+            ctx.beginPath();
+            ctx.moveTo(headX, headY + 14);
+            ctx.lineTo(hipX, hipY);
+            ctx.lineTo(centerX - 25, 220);
+            ctx.moveTo(hipX, hipY);
+            ctx.lineTo(centerX + 25, 220);
+            ctx.strokeStyle = bodyColor;
+            ctx.stroke();
 
-        case 'shrugs': {
-          // Standing figure shrugging shoulders straight up
-          const shrugLift = progress * 15;
-          const headY = 65 - shrugLift * 0.4;
-          drawHead(centerX, headY);
+            const handX = centerX + 20;
+            const handY = 40;
+            ctx.beginPath();
+            ctx.moveTo(headX + 10, headY + 10);
+            ctx.lineTo(handX, handY);
+            ctx.strokeStyle = accentNeon;
+            ctx.stroke();
 
-          const shoulderY = 85 - shrugLift;
-          ctx.beginPath();
-          ctx.moveTo(centerX, headY + 14);
-          ctx.lineTo(centerX, 150);
-          ctx.lineTo(centerX - 20, 220);
-          ctx.moveTo(centerX, 150);
-          ctx.lineTo(centerX + 20, 220);
-          ctx.strokeStyle = bodyColor;
-          ctx.stroke();
+            drawKettlebell(handX, handY - 10, 0);
+            break;
+          }
 
-          // Arms hanging down but lifting with shoulders
-          const handY = 150 - shrugLift;
-          ctx.beginPath();
-          ctx.moveTo(centerX - 20, shoulderY);
-          ctx.lineTo(centerX - 25, handY);
-          ctx.moveTo(centerX + 20, shoulderY);
-          ctx.lineTo(centerX + 25, handY);
-          ctx.strokeStyle = accentNeon;
-          ctx.stroke();
+          case 'overhead_press': {
+            const headY = 65;
+            drawHead(centerX, headY);
 
-          drawDumbbell(centerX - 25, handY);
-          drawDumbbell(centerX + 25, handY);
-          break;
-        }
+            ctx.beginPath();
+            ctx.moveTo(centerX, headY + 14);
+            ctx.lineTo(centerX, 150);
+            ctx.strokeStyle = bodyColor;
+            ctx.stroke();
 
-        case 'lateral_raise': {
-          // Standing figure raising arms out to sides
-          const headY = 65;
-          drawHead(centerX, headY);
+            ctx.beginPath();
+            ctx.moveTo(centerX, 150);
+            ctx.lineTo(centerX - 25, 220);
+            ctx.moveTo(centerX, 150);
+            ctx.lineTo(centerX + 25, 220);
+            ctx.stroke();
 
-          // Torso & Legs
-          ctx.beginPath();
-          ctx.moveTo(centerX, headY + 14);
-          ctx.lineTo(centerX, 150);
-          ctx.moveTo(centerX, 150);
-          ctx.lineTo(centerX - 20, 220);
-          ctx.moveTo(centerX, 150);
-          ctx.lineTo(centerX + 20, 220);
-          ctx.strokeStyle = bodyColor;
-          ctx.stroke();
+            const handY = 100 - progress * 55;
+            const elbowY = 105 - progress * 40;
+            const leftElbowX = centerX - 35 + progress * 10;
+            const rightElbowX = centerX + 35 - progress * 10;
 
-          const armAngle = progress * (Math.PI / 2);
-          const armLength = 55;
-          const leftHandX = centerX - 15 - Math.sin(armAngle) * armLength;
-          const leftHandY = headY + 25 + Math.cos(armAngle) * armLength;
+            ctx.beginPath();
+            ctx.moveTo(centerX - 15, headY + 25);
+            ctx.lineTo(leftElbowX, elbowY);
+            ctx.lineTo(centerX - 30, handY);
+            ctx.strokeStyle = accentNeon;
+            ctx.stroke();
 
-          const rightHandX = centerX + 15 + Math.sin(armAngle) * armLength;
-          const rightHandY = headY + 25 + Math.cos(armAngle) * armLength;
+            ctx.beginPath();
+            ctx.moveTo(centerX + 15, headY + 25);
+            ctx.lineTo(rightElbowX, elbowY);
+            ctx.lineTo(centerX + 30, handY);
+            ctx.stroke();
 
-          ctx.beginPath();
-          ctx.moveTo(centerX - 15, headY + 25);
-          ctx.lineTo(leftHandX, leftHandY);
-          ctx.moveTo(centerX + 15, headY + 25);
-          ctx.lineTo(rightHandX, rightHandY);
-          ctx.strokeStyle = accentNeon;
-          ctx.stroke();
+            drawDumbbell(centerX - 30, handY);
+            drawDumbbell(centerX + 30, handY);
+            break;
+          }
 
-          drawDumbbell(leftHandX, leftHandY, armAngle);
-          drawDumbbell(rightHandX, rightHandY, -armAngle);
-          break;
-        }
+          case 'shrugs': {
+            const shrugLift = progress * 15;
+            const headY = 65 - shrugLift * 0.4;
+            drawHead(centerX, headY);
 
-        case 'bent_over_row': {
-          const headX = centerX - 40;
-          const headY = 85;
-          drawHead(headX, headY);
+            const shoulderY = 85 - shrugLift;
+            ctx.beginPath();
+            ctx.moveTo(centerX, headY + 14);
+            ctx.lineTo(centerX, 150);
+            ctx.lineTo(centerX - 20, 220);
+            ctx.moveTo(centerX, 150);
+            ctx.lineTo(centerX + 20, 220);
+            ctx.strokeStyle = bodyColor;
+            ctx.stroke();
 
-          const hipX = centerX + 20;
-          const hipY = 135;
-          ctx.beginPath();
-          ctx.moveTo(headX + 10, headY + 10);
-          ctx.lineTo(hipX, hipY);
-          ctx.lineTo(hipX - 10, 220);
-          ctx.moveTo(hipX, hipY);
-          ctx.lineTo(hipX + 15, 220);
-          ctx.strokeStyle = bodyColor;
-          ctx.stroke();
+            const handY = 150 - shrugLift;
+            ctx.beginPath();
+            ctx.moveTo(centerX - 20, shoulderY);
+            ctx.lineTo(centerX - 25, handY);
+            ctx.moveTo(centerX + 20, shoulderY);
+            ctx.lineTo(centerX + 25, handY);
+            ctx.strokeStyle = accentNeon;
+            ctx.stroke();
 
-          const handY = 160 - progress * 55;
-          const handX = centerX - 15;
-          const elbowX = centerX + 10 + progress * 15;
-          const elbowY = 120 - progress * 20;
+            drawDumbbell(centerX - 25, handY);
+            drawDumbbell(centerX + 25, handY);
+            break;
+          }
 
-          ctx.beginPath();
-          ctx.moveTo(centerX - 25, 100);
-          ctx.lineTo(elbowX, elbowY);
-          ctx.lineTo(handX, handY);
-          ctx.strokeStyle = accentNeon;
-          ctx.stroke();
+          case 'lateral_raise': {
+            const headY = 65;
+            drawHead(centerX, headY);
 
-          drawDumbbell(handX, handY, Math.PI / 6);
-          break;
-        }
+            ctx.beginPath();
+            ctx.moveTo(centerX, headY + 14);
+            ctx.lineTo(centerX, 150);
+            ctx.moveTo(centerX, 150);
+            ctx.lineTo(centerX - 20, 220);
+            ctx.moveTo(centerX, 150);
+            ctx.lineTo(centerX + 20, 220);
+            ctx.strokeStyle = bodyColor;
+            ctx.stroke();
 
-        case 'bicep_curl': {
-          const headY = 65;
-          drawHead(centerX, headY);
+            const armAngle = progress * (Math.PI / 2);
+            const armLength = 55;
+            const leftHandX = centerX - 15 - Math.sin(armAngle) * armLength;
+            const leftHandY = headY + 25 + Math.cos(armAngle) * armLength;
 
-          ctx.beginPath();
-          ctx.moveTo(centerX, headY + 14);
-          ctx.lineTo(centerX, 150);
-          ctx.lineTo(centerX - 20, 220);
-          ctx.moveTo(centerX, 150);
-          ctx.lineTo(centerX + 20, 220);
-          ctx.strokeStyle = bodyColor;
-          ctx.stroke();
+            const rightHandX = centerX + 15 + Math.sin(armAngle) * armLength;
+            const rightHandY = headY + 25 + Math.cos(armAngle) * armLength;
 
-          const curlY = 160 - progress * 65;
-          const curlX = centerX + 25 - progress * 8;
+            ctx.beginPath();
+            ctx.moveTo(centerX - 15, headY + 25);
+            ctx.lineTo(leftHandX, leftHandY);
+            ctx.moveTo(centerX + 15, headY + 25);
+            ctx.lineTo(rightHandX, rightHandY);
+            ctx.strokeStyle = accentNeon;
+            ctx.stroke();
 
-          ctx.beginPath();
-          ctx.moveTo(centerX + 15, headY + 25);
-          ctx.lineTo(centerX + 22, 118);
-          ctx.lineTo(curlX, curlY);
-          ctx.strokeStyle = accentNeon;
-          ctx.stroke();
+            drawDumbbell(leftHandX, leftHandY, armAngle);
+            drawDumbbell(rightHandX, rightHandY, -armAngle);
+            break;
+          }
 
-          drawDumbbell(curlX, curlY, -progress * Math.PI * 0.4);
-          break;
-        }
+          case 'bent_over_row': {
+            const headX = centerX - 40;
+            const headY = 85;
+            drawHead(headX, headY);
 
-        case 'goblet_squat': {
-          const squatDrop = progress * 40;
-          const headY = 65 + squatDrop;
-          drawHead(centerX, headY);
+            const hipX = centerX + 20;
+            const hipY = 135;
+            ctx.beginPath();
+            ctx.moveTo(headX + 10, headY + 10);
+            ctx.lineTo(hipX, hipY);
+            ctx.lineTo(hipX - 10, 220);
+            ctx.moveTo(hipX, hipY);
+            ctx.lineTo(hipX + 15, 220);
+            ctx.strokeStyle = bodyColor;
+            ctx.stroke();
 
-          const hipY = 145 + squatDrop * 1.1;
-          const kneeX = 35;
-          const kneeY = 180 + squatDrop * 0.4;
+            const handY = 160 - progress * 55;
+            const handX = centerX - 15;
+            const elbowX = centerX + 10 + progress * 15;
+            const elbowY = 120 - progress * 20;
 
-          ctx.beginPath();
-          ctx.moveTo(centerX, headY + 14);
-          ctx.lineTo(centerX, hipY);
-          ctx.lineTo(centerX - kneeX, kneeY);
-          ctx.lineTo(centerX - 25, 225);
-          ctx.moveTo(centerX, hipY);
-          ctx.lineTo(centerX + kneeX, kneeY);
-          ctx.lineTo(centerX + 25, 225);
-          ctx.strokeStyle = bodyColor;
-          ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(centerX - 25, 100);
+            ctx.lineTo(elbowX, elbowY);
+            ctx.lineTo(handX, handY);
+            ctx.strokeStyle = accentNeon;
+            ctx.stroke();
 
-          ctx.beginPath();
-          ctx.moveTo(centerX - 15, headY + 25);
-          ctx.lineTo(centerX, headY + 35);
-          ctx.moveTo(centerX + 15, headY + 25);
-          ctx.lineTo(centerX, headY + 35);
-          ctx.strokeStyle = accentNeon;
-          ctx.stroke();
+            drawDumbbell(handX, handY, Math.PI / 6);
+            break;
+          }
 
-          drawKettlebell(centerX, headY + 35, 0, 11);
-          break;
-        }
+          case 'bicep_curl': {
+            const headY = 65;
+            drawHead(centerX, headY);
 
-        default: {
-          const headY = 65;
-          drawHead(centerX, headY);
-          ctx.beginPath();
-          ctx.moveTo(centerX, headY + 14);
-          ctx.lineTo(centerX, 150);
-          ctx.strokeStyle = bodyColor;
-          ctx.stroke();
-          const handY = 110 - progress * 50;
-          drawDumbbell(centerX, handY);
-          break;
+            ctx.beginPath();
+            ctx.moveTo(centerX, headY + 14);
+            ctx.lineTo(centerX, 150);
+            ctx.lineTo(centerX - 20, 220);
+            ctx.moveTo(centerX, 150);
+            ctx.lineTo(centerX + 20, 220);
+            ctx.strokeStyle = bodyColor;
+            ctx.stroke();
+
+            const curlY = 160 - progress * 65;
+            const curlX = centerX + 25 - progress * 8;
+
+            ctx.beginPath();
+            ctx.moveTo(centerX + 15, headY + 25);
+            ctx.lineTo(centerX + 22, 118);
+            ctx.lineTo(curlX, curlY);
+            ctx.strokeStyle = accentNeon;
+            ctx.stroke();
+
+            drawDumbbell(curlX, curlY, -progress * Math.PI * 0.4);
+            break;
+          }
+
+          case 'goblet_squat': {
+            const squatDrop = progress * 40;
+            const headY = 65 + squatDrop;
+            drawHead(centerX, headY);
+
+            const hipY = 145 + squatDrop * 1.1;
+            const kneeX = 35;
+            const kneeY = 180 + squatDrop * 0.4;
+
+            ctx.beginPath();
+            ctx.moveTo(centerX, headY + 14);
+            ctx.lineTo(centerX, hipY);
+            ctx.lineTo(centerX - kneeX, kneeY);
+            ctx.lineTo(centerX - 25, 225);
+            ctx.moveTo(centerX, hipY);
+            ctx.lineTo(centerX + kneeX, kneeY);
+            ctx.lineTo(centerX + 25, 225);
+            ctx.strokeStyle = bodyColor;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(centerX - 15, headY + 25);
+            ctx.lineTo(centerX, headY + 35);
+            ctx.moveTo(centerX + 15, headY + 25);
+            ctx.lineTo(centerX, headY + 35);
+            ctx.strokeStyle = accentNeon;
+            ctx.stroke();
+
+            drawKettlebell(centerX, headY + 35, 0, 11);
+            break;
+          }
+
+          default: {
+            const headY = 65;
+            drawHead(centerX, headY);
+            ctx.beginPath();
+            ctx.moveTo(centerX, headY + 14);
+            ctx.lineTo(centerX, 150);
+            ctx.strokeStyle = bodyColor;
+            ctx.stroke();
+            const handY = 110 - progress * 50;
+            drawDumbbell(centerX, handY);
+            break;
+          }
         }
       }
 
@@ -500,19 +628,59 @@ export const ExerciseVisualizer = ({ animationType, isPlaying = true, className 
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [animationType, isPlaying]);
+  }, [animationType, isPlaying, viewAngle]);
+
+  const viewAngleLabels = {
+    front: 'Front View (Symmetry & Track)',
+    side: 'Side Profile (Posture & Hinge)',
+    '3d': '3D Iso (Depth & Motion Arc)'
+  };
 
   return (
-    <div className={`relative flex items-center justify-center overflow-hidden rounded-2xl bg-slate-900/80 border border-slate-800 backdrop-blur-md shadow-2xl p-2 ${className}`}>
-      <canvas
-        ref={canvasRef}
-        width={260}
-        height={240}
-        className="w-full max-w-[260px] h-[240px] object-contain drop-shadow-[0_0_15px_rgba(6,182,212,0.2)]"
-      />
-      <div className="absolute bottom-2 left-3 flex items-center gap-1.5 text-[11px] font-medium tracking-wider text-cyan-400/80 uppercase">
-        <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
-        Motion Guide
+    <div className={`relative flex flex-col items-center justify-center overflow-hidden rounded-2xl bg-slate-900/90 border border-slate-800 backdrop-blur-md shadow-2xl p-2 ${className}`}>
+      {/* TOP MULTI-CAMERA ANGLE SWITCHER CONSOLE */}
+      <div className="w-full flex items-center justify-between px-3 py-1.5 bg-slate-950/80 rounded-xl border border-slate-800/80 mb-1 z-10">
+        <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-300">
+          <Camera className="w-3.5 h-3.5 text-cyan-400" />
+          Camera Angle:
+        </div>
+
+        {/* Camera Switcher Buttons */}
+        <div className="flex items-center gap-1">
+          {[
+            { id: 'front', label: 'Front' },
+            { id: 'side', label: 'Side' },
+            { id: '3d', label: '3D Iso' }
+          ].map((angle) => (
+            <button
+              key={angle.id}
+              onClick={() => setViewAngle(angle.id)}
+              className={`px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase transition-all ${
+                viewAngle === angle.id
+                  ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md shadow-cyan-500/25'
+                  : 'bg-slate-800/70 text-slate-400 hover:text-slate-200 hover:bg-slate-700/50'
+              }`}
+            >
+              {angle.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* CANVAS DISPLAY */}
+      <div className="relative w-full max-w-[260px] h-[240px]">
+        <canvas
+          ref={canvasRef}
+          width={260}
+          height={240}
+          className="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(6,182,212,0.2)]"
+        />
+
+        {/* Bottom Angle Cue Badge */}
+        <div className="absolute bottom-2 left-2 flex items-center gap-1.5 text-[10px] font-semibold text-cyan-300/90 bg-slate-950/80 px-2.5 py-1 rounded-lg border border-slate-800 backdrop-blur-sm uppercase tracking-wider">
+          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+          {viewAngleLabels[viewAngle]}
+        </div>
       </div>
     </div>
   );
