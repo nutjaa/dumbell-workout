@@ -207,6 +207,157 @@ export const EXERCISES = [
     defaultRestSec: 45,
     animationType: 'kettlebell_halo'
   },
+  {
+    id: 'kb-bent-over-row',
+    name: 'Kettlebell Bent-Over Row',
+    category: 'Kettlebell',
+    equipmentType: 'Kettlebell',
+    difficulty: 'Intermediate',
+    equipment: 'Single or Pair of Kettlebells',
+    targetMuscles: ['Latissimus Dorsi', 'Rhomboids', 'Middle Traps'],
+    secondaryMuscles: ['Biceps', 'Rear Deltoids', 'Core'],
+    description: 'Powerful pulling movement using a kettlebell to build upper back thickness and posture strength.',
+    steps: [
+      'Stand feet shoulder-width apart, hinge forward at hips with spine straight and knees soft.',
+      'Grip kettlebell handle with arm extended toward floor.',
+      'Drive elbow backward pulling kettlebell to lower rib cage.',
+      'Squeeze shoulder blade at top, then lower under control.'
+    ],
+    formTips: [
+      'Maintain flat back and neutral neck throughout.',
+      'Pull through elbow without using torso momentum.'
+    ],
+    defaultSets: 4,
+    defaultReps: 10,
+    defaultWeight: 16,
+    defaultRestSec: 60,
+    animationType: 'bent_over_row'
+  },
+  {
+    id: 'kb-floor-press',
+    name: 'Kettlebell Floor Press',
+    category: 'Kettlebell',
+    equipmentType: 'Kettlebell',
+    difficulty: 'Beginner',
+    equipment: 'Single or Pair of Kettlebells',
+    targetMuscles: ['Pectoralis Major', 'Anterior Deltoid'],
+    secondaryMuscles: ['Triceps', 'Core'],
+    description: 'Chest pressing variation performed on the floor to limit shoulder stress while building upper push power.',
+    steps: [
+      'Lie flat on back with knees bent, holding kettlebell in rack position at side of chest.',
+      'Press kettlebell straight up vertically until arm is locked overhead.',
+      'Pause briefly, then lower back down until triceps touch floor.',
+      'Pause on floor for a moment before pressing again.'
+    ],
+    formTips: [
+      'Keep wrists stacked straight over elbows.',
+      'Do not bounce triceps off the floor.'
+    ],
+    defaultSets: 4,
+    defaultReps: 10,
+    defaultWeight: 16,
+    defaultRestSec: 60,
+    animationType: 'chest_press'
+  },
+  {
+    id: 'kb-bicep-curl',
+    name: 'Kettlebell Horn Bicep Curl',
+    category: 'Kettlebell',
+    equipmentType: 'Kettlebell',
+    difficulty: 'Beginner',
+    equipment: 'Single Kettlebell',
+    targetMuscles: ['Biceps Brachii'],
+    secondaryMuscles: ['Brachialis', 'Forearms'],
+    description: 'Bicep curl holding kettlebell by the horns for peak biceps contraction and grip strength.',
+    steps: [
+      'Stand upright holding kettlebell by the horns in front of chest.',
+      'Lower weight until arms are fully extended at thighs.',
+      'Curl kettlebell up toward chest squeezing biceps tightly at top.',
+      'Lower under control to full arm lockout.'
+    ],
+    formTips: [
+      'Keep elbows pinned near ribcage without swinging torso.'
+    ],
+    defaultSets: 3,
+    defaultReps: 12,
+    defaultWeight: 12,
+    defaultRestSec: 45,
+    animationType: 'bicep_curl'
+  },
+  {
+    id: 'kb-romanian-deadlift',
+    name: 'Kettlebell Romanian Deadlift (RDL)',
+    category: 'Kettlebell',
+    equipmentType: 'Kettlebell',
+    difficulty: 'Intermediate',
+    equipment: 'Single or Pair of Kettlebells',
+    targetMuscles: ['Hamstrings', 'Gluteus Maximus'],
+    secondaryMuscles: ['Lower Back (Erector Spinae)', 'Core'],
+    description: 'Hinge movement targeting the posterior chain, hamstrings stretch, and glute strength with a kettlebell.',
+    steps: [
+      'Stand feet hip-width apart holding kettlebell by the handle in front of thighs.',
+      'Hinge back at hips pushing hips rearward with slight knee bend.',
+      'Lower kettlebell down shins until hamstrings feel full stretch.',
+      'Contract glutes and extend hips to return to standing.'
+    ],
+    formTips: [
+      'Keep spine flat and kettlebell path close to legs.'
+    ],
+    defaultSets: 4,
+    defaultReps: 10,
+    defaultWeight: 20,
+    defaultRestSec: 60,
+    animationType: 'bent_over_row'
+  },
+  {
+    id: 'kb-lunges',
+    name: 'Kettlebell Goblet / Rack Lunges',
+    category: 'Kettlebell',
+    equipmentType: 'Kettlebell',
+    difficulty: 'Intermediate',
+    equipment: 'Single Kettlebell',
+    targetMuscles: ['Quadriceps', 'Gluteus Maximus', 'Hamstrings'],
+    secondaryMuscles: ['Calves', 'Core Balance'],
+    description: 'Unilateral leg builder holding kettlebell at chest or rack position for leg strength and balance.',
+    steps: [
+      'Hold kettlebell at chest in goblet position or locked in shoulder rack.',
+      'Step forward with one leg and lower back knee toward floor until both knees bent at 90 degrees.',
+      'Drive through front heel to return to standing position.',
+      'Alternate legs each rep.'
+    ],
+    formTips: [
+      'Keep front knee aligned over ankle without caving inward.'
+    ],
+    defaultSets: 3,
+    defaultReps: 10,
+    defaultWeight: 12,
+    defaultRestSec: 60,
+    animationType: 'goblet_squat'
+  },
+  {
+    id: 'kb-renegade-row',
+    name: 'Kettlebell Renegade Row',
+    category: 'Kettlebell',
+    equipmentType: 'Kettlebell',
+    difficulty: 'Advanced',
+    equipment: 'Pair of Kettlebells',
+    targetMuscles: ['Latissimus Dorsi', 'Core / Abs'],
+    secondaryMuscles: ['Rhomboids', 'Shoulders', 'Triceps'],
+    description: 'Advanced plank row holding kettlebell handles for core anti-rotation stability and back power.',
+    steps: [
+      'Assume high plank position gripping handles of two kettlebells on floor, feet wide.',
+      'Keep core rigid, row one kettlebell up to lower hip while balancing on opposite hand.',
+      'Lower kettlebell to floor under control, then alternate to opposite side.'
+    ],
+    formTips: [
+      'Squeeze glutes and core tight to keep hips from rotating.'
+    ],
+    defaultSets: 3,
+    defaultReps: 10,
+    defaultWeight: 14,
+    defaultRestSec: 60,
+    animationType: 'renegade_row'
+  },
 
   // --- DUMBBELL EXERCISES SECTION ---
   {

@@ -37,6 +37,73 @@ export const DEFAULT_ROUTINES = [
       { exerciseId: 'kb-windmill', sets: 3, targetReps: 8, targetWeight: 10, restSec: 45 }
     ]
   },
+  {
+    id: 'routine-kb-upper-core-nolegs',
+    title: 'Kettlebell Upper Body & Core (No Legs)',
+    category: 'Kettlebell',
+    equipmentType: 'Kettlebell',
+    description: 'Targeted upper body and core routine with zero leg strain. Features shoulder halos, clean & press, bent-over rows, floor press, windmills, and bicep curls.',
+    estimatedMinutes: 28,
+    difficulty: 'Intermediate',
+    exercises: [
+      { exerciseId: 'kb-halo', sets: 3, targetReps: 10, targetWeight: 10, restSec: 45 },
+      { exerciseId: 'kb-clean-press', sets: 4, targetReps: 10, targetWeight: 14, restSec: 60 },
+      { exerciseId: 'kb-bent-over-row', sets: 4, targetReps: 10, targetWeight: 16, restSec: 60 },
+      { exerciseId: 'kb-floor-press', sets: 4, targetReps: 10, targetWeight: 16, restSec: 60 },
+      { exerciseId: 'kb-windmill', sets: 3, targetReps: 8, targetWeight: 10, restSec: 45 },
+      { exerciseId: 'kb-bicep-curl', sets: 3, targetReps: 12, targetWeight: 12, restSec: 45 }
+    ]
+  },
+  {
+    id: 'routine-kb-hiit-metabolic',
+    title: 'Kettlebell HIIT & Metabolic Blast',
+    category: 'Kettlebell',
+    equipmentType: 'Kettlebell',
+    description: 'Fast-paced interval conditioning flow combining explosive swings, snatches, sumo high pulls, push-presses, and core halos for max calorie burn.',
+    estimatedMinutes: 25,
+    difficulty: 'Advanced',
+    exercises: [
+      { exerciseId: 'kb-swings', sets: 4, targetReps: 20, targetWeight: 16, restSec: 45 },
+      { exerciseId: 'kb-snatch', sets: 4, targetReps: 12, targetWeight: 14, restSec: 45 },
+      { exerciseId: 'kb-high-pull', sets: 4, targetReps: 15, targetWeight: 16, restSec: 45 },
+      { exerciseId: 'kb-clean-press', sets: 3, targetReps: 10, targetWeight: 14, restSec: 60 },
+      { exerciseId: 'kb-halo', sets: 3, targetReps: 12, targetWeight: 10, restSec: 45 },
+      { exerciseId: 'kb-goblet-squat', sets: 3, targetReps: 15, targetWeight: 16, restSec: 45 }
+    ]
+  },
+  {
+    id: 'routine-kb-lower-glute',
+    title: 'Kettlebell Lower Body & Glute Sculptor',
+    category: 'Kettlebell',
+    equipmentType: 'Kettlebell',
+    description: 'Lower-body centric workout loading quads, hamstrings, and glutes with goblet squats, Romanian deadlifts, Russian swings, and lunges.',
+    estimatedMinutes: 30,
+    difficulty: 'Intermediate',
+    exercises: [
+      { exerciseId: 'kb-goblet-squat', sets: 4, targetReps: 12, targetWeight: 16, restSec: 60 },
+      { exerciseId: 'kb-romanian-deadlift', sets: 4, targetReps: 10, targetWeight: 20, restSec: 60 },
+      { exerciseId: 'kb-swings', sets: 4, targetReps: 15, targetWeight: 16, restSec: 45 },
+      { exerciseId: 'kb-lunges', sets: 3, targetReps: 10, targetWeight: 12, restSec: 60 },
+      { exerciseId: 'kb-high-pull', sets: 3, targetReps: 12, targetWeight: 16, restSec: 45 }
+    ]
+  },
+  {
+    id: 'routine-kb-strength-flow',
+    title: 'Kettlebell Strength & Stability Master',
+    category: 'Kettlebell',
+    equipmentType: 'Kettlebell',
+    description: 'Comprehensive technical strength routine emphasizing Turkish get-ups, single-arm snatches, heavy clean & press, windmills, and renegade rows.',
+    estimatedMinutes: 35,
+    difficulty: 'Advanced',
+    exercises: [
+      { exerciseId: 'kb-turkish-getup', sets: 4, targetReps: 5, targetWeight: 14, restSec: 75 },
+      { exerciseId: 'kb-clean-press', sets: 4, targetReps: 8, targetWeight: 16, restSec: 60 },
+      { exerciseId: 'kb-snatch', sets: 4, targetReps: 8, targetWeight: 14, restSec: 60 },
+      { exerciseId: 'kb-windmill', sets: 3, targetReps: 8, targetWeight: 12, restSec: 60 },
+      { exerciseId: 'kb-renegade-row', sets: 3, targetReps: 10, targetWeight: 14, restSec: 60 },
+      { exerciseId: 'kb-goblet-squat', sets: 3, targetReps: 10, targetWeight: 18, restSec: 60 }
+    ]
+  },
 
   // --- DUMBBELL ROUTINES ---
   {
