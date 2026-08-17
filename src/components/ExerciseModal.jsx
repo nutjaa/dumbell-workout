@@ -30,7 +30,7 @@ export const ExerciseModal = ({ exercise, onClose }) => {
 
         {/* Visualizer */}
         <div className="mb-6">
-          <ExerciseVisualizer animationType={exercise.animationType} isPlaying={true} />
+          <ExerciseVisualizer animationType={exercise.animationType} postureImage={exercise.postureImage} isPlaying={true} />
         </div>
 
         {/* Muscles */}

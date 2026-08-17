@@ -24,7 +24,8 @@ export const EXERCISES = [
     defaultReps: 15,
     defaultWeight: 16,
     defaultRestSec: 45,
-    animationType: 'kettlebell_swing'
+    animationType: 'kettlebell_swing',
+    postureImage: 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One-Arm_Kettlebell_Swings/0.jpg'
   },
   {
     id: 'kb-turkish-getup',
@@ -51,7 +52,8 @@ export const EXERCISES = [
     defaultReps: 5,
     defaultWeight: 12,
     defaultRestSec: 75,
-    animationType: 'turkish_getup'
+    animationType: 'turkish_getup',
+    postureImage: 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kettlebell_Turkish_Get-Up_Lunge_style/0.jpg'
   },
   {
     id: 'kb-clean-press',
@@ -76,7 +78,8 @@ export const EXERCISES = [
     defaultReps: 10,
     defaultWeight: 14,
     defaultRestSec: 60,
-    animationType: 'clean_press'
+    animationType: 'clean_press',
+    postureImage: 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Clean_and_Press/0.jpg'
   },
   {
     id: 'kb-high-pull',
@@ -101,7 +104,8 @@ export const EXERCISES = [
     defaultReps: 12,
     defaultWeight: 16,
     defaultRestSec: 60,
-    animationType: 'high_pull'
+    animationType: 'high_pull',
+    postureImage: 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kettlebell_Sumo_High_Pull/0.jpg'
   },
   {
     id: 'kb-windmill',
@@ -126,7 +130,8 @@ export const EXERCISES = [
     defaultReps: 8,
     defaultWeight: 10,
     defaultRestSec: 45,
-    animationType: 'windmill'
+    animationType: 'windmill',
+    postureImage: 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Advanced_Kettlebell_Windmill/0.jpg'
   },
   {
     id: 'kb-goblet-squat',
@@ -151,7 +156,8 @@ export const EXERCISES = [
     defaultReps: 12,
     defaultWeight: 16,
     defaultRestSec: 60,
-    animationType: 'goblet_squat'
+    animationType: 'goblet_squat',
+    postureImage: 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Goblet_Squat/0.jpg'
   },
   {
     id: 'kb-snatch',
@@ -178,7 +184,8 @@ export const EXERCISES = [
     defaultReps: 10,
     defaultWeight: 14,
     defaultRestSec: 60,
-    animationType: 'kettlebell_snatch'
+    animationType: 'kettlebell_snatch',
+    postureImage: 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Double_Kettlebell_Snatch/0.jpg'
   },
   {
     id: 'kb-halo',
@@ -205,7 +212,8 @@ export const EXERCISES = [
     defaultReps: 10,
     defaultWeight: 10,
     defaultRestSec: 45,
-    animationType: 'kettlebell_halo'
+    animationType: 'kettlebell_halo',
+    postureImage: 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Clockwork/0.jpg'
   },
   {
     id: 'kb-bent-over-row',
@@ -231,7 +239,8 @@ export const EXERCISES = [
     defaultReps: 10,
     defaultWeight: 16,
     defaultRestSec: 60,
-    animationType: 'bent_over_row'
+    animationType: 'bent_over_row',
+    postureImage: 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Alternating_Kettlebell_Row/0.jpg'
   },
   {
     id: 'kb-floor-press',
@@ -257,7 +266,8 @@ export const EXERCISES = [
     defaultReps: 10,
     defaultWeight: 16,
     defaultRestSec: 60,
-    animationType: 'chest_press'
+    animationType: 'chest_press',
+    postureImage: 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Alternating_Floor_Press/0.jpg'
   },
   {
     id: 'kb-bicep-curl',
@@ -410,7 +420,8 @@ export const EXERCISES = [
     defaultReps: 10,
     defaultWeight: 14,
     defaultRestSec: 60,
-    animationType: 'bent_over_row'
+    animationType: 'bent_over_row',
+    postureImage: 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Barbell_Row/0.jpg'
   },
   {
     id: 'db-lateral-raise',
@@ -436,7 +447,8 @@ export const EXERCISES = [
     defaultReps: 12,
     defaultWeight: 8,
     defaultRestSec: 45,
-    animationType: 'lateral_raise'
+    animationType: 'lateral_raise',
+    postureImage: 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Seated_Lateral_Raise/0.jpg'
   },
   {
     id: 'db-single-arm-row',
@@ -462,7 +474,8 @@ export const EXERCISES = [
     defaultReps: 10,
     defaultWeight: 14,
     defaultRestSec: 60,
-    animationType: 'single_arm_row'
+    animationType: 'single_arm_row',
+    postureImage: 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_One-Arm_Long_Bar_Row/0.jpg'
   },
   {
     id: 'db-reverse-fly',
@@ -488,7 +501,8 @@ export const EXERCISES = [
     defaultReps: 12,
     defaultWeight: 6,
     defaultRestSec: 45,
-    animationType: 'reverse_fly'
+    animationType: 'reverse_fly',
+    postureImage: 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Back_Flyes_-_With_Bands/0.jpg'
   },
   {
     id: 'db-arnold-press',
@@ -513,7 +527,8 @@ export const EXERCISES = [
     defaultReps: 10,
     defaultWeight: 10,
     defaultRestSec: 60,
-    animationType: 'arnold_press'
+    animationType: 'arnold_press',
+    postureImage: 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Arnold_Dumbbell_Press/0.jpg'
   },
   {
     id: 'db-shrugs',
@@ -538,7 +553,8 @@ export const EXERCISES = [
     defaultReps: 12,
     defaultWeight: 16,
     defaultRestSec: 45,
-    animationType: 'shrugs'
+    animationType: 'shrugs',
+    postureImage: 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Shrug/0.jpg'
   },
   {
     id: 'db-pullover',
@@ -562,7 +578,8 @@ export const EXERCISES = [
     defaultReps: 10,
     defaultWeight: 14,
     defaultRestSec: 60,
-    animationType: 'pullover'
+    animationType: 'pullover',
+    postureImage: 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent-Arm_Barbell_Pullover/0.jpg'
   },
   {
     id: 'db-renegade-row',
@@ -586,7 +603,8 @@ export const EXERCISES = [
     defaultReps: 10,
     defaultWeight: 12,
     defaultRestSec: 60,
-    animationType: 'renegade_row'
+    animationType: 'renegade_row',
+    postureImage: 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Alternating_Renegade_Row/0.jpg'
   },
   {
     id: 'db-bicep-curl',
@@ -610,7 +628,8 @@ export const EXERCISES = [
     defaultReps: 12,
     defaultWeight: 10,
     defaultRestSec: 45,
-    animationType: 'bicep_curl'
+    animationType: 'bicep_curl',
+    postureImage: 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Dumbbell_Inner_Biceps_Curl/0.jpg'
   },
   {
     id: 'db-hammer-curl',
@@ -634,7 +653,8 @@ export const EXERCISES = [
     defaultReps: 12,
     defaultWeight: 10,
     defaultRestSec: 45,
-    animationType: 'bicep_curl'
+    animationType: 'bicep_curl',
+    postureImage: 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Alternate_Hammer_Curl/0.jpg'
   },
   {
     id: 'db-tricep-extension',
@@ -731,7 +751,8 @@ export const EXERCISES = [
     defaultReps: 12,
     defaultWeight: 16,
     defaultRestSec: 75,
-    animationType: 'goblet_squat'
+    animationType: 'goblet_squat',
+    postureImage: 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Goblet_Squat/0.jpg'
   },
   {
     id: 'db-romanian-deadlift',

@@ -340,7 +340,10 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
           </div>
 
           <button
-            onClick={() => setActiveRoutine(null)}
+            onClick={() => {
+              setActiveRoutine(null);
+              if (onSelectRoutine) onSelectRoutine(null);
+            }}
             className="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold shadow-lg shadow-cyan-500/25 hover:scale-[1.02] transition-all"
           >
             Back to Workout Library
@@ -456,7 +459,10 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
           </div>
 
           <button
-            onClick={() => setActiveRoutine(null)}
+            onClick={() => {
+              setActiveRoutine(null);
+              if (onSelectRoutine) onSelectRoutine(null);
+            }}
             className="text-xs text-slate-400 hover:text-rose-400 px-3 py-1.5 rounded-lg border border-slate-800 hover:border-rose-500/30 transition-all"
           >
             Quit

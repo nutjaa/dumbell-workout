@@ -1,12 +1,33 @@
-import React, { useState } from 'react';
-import { Search, Dumbbell, Eye } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Search, Eye } from 'lucide-react';
 import { EXERCISES, MUSCLE_CATEGORIES } from '../data/exercises';
 import { ExerciseModal } from './ExerciseModal';
+import { setHashRoute } from '../utils/router';
 
-export const ExerciseLibrary = () => {
+export const ExerciseLibrary = ({ initialExerciseId }) => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [activeModalExercise, setActiveModalExercise] = useState(null);
+
+  // Sync modal state with initialExerciseId prop
+  useEffect(() => {
+    if (initialExerciseId) {
+      const found = EXERCISES.find((e) => e.id === initialExerciseId);
+      setActiveModalExercise(found || null);
+    } else {
+      setActiveModalExercise(null);
+    }
+  }, [initialExerciseId]);
+
+  const handleOpenModal = (ex) => {
+    setActiveModalExercise(ex);
+    setHashRoute('library', ex.id);
+  };
+
+  const handleCloseModal = () => {
+    setActiveModalExercise(null);
+    setHashRoute('library');
+  };
 
   const filteredExercises = EXERCISES.filter((ex) => {
     const matchesCategory =
@@ -114,7 +135,7 @@ export const ExerciseLibrary = () => {
               </div>
 
               <button
-                onClick={() => setActiveModalExercise(ex)}
+                onClick={() => handleOpenModal(ex)}
                 className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-cyan-500/20 hover:text-cyan-300 text-slate-300 font-semibold text-xs border border-slate-700 hover:border-cyan-500/40 transition-all"
               >
                 <Eye className="w-4 h-4" />
@@ -128,7 +149,7 @@ export const ExerciseLibrary = () => {
       {/* Modal */}
       <ExerciseModal
         exercise={activeModalExercise}
-        onClose={() => setActiveModalExercise(null)}
+        onClose={handleCloseModal}
       />
     </div>
   );
