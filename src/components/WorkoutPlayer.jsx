@@ -52,23 +52,22 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
 
   // Rest Countdown Timer Effect
   useEffect(() => {
-    if (isResting && !isRestPaused && restSecondsLeft > 0) {
-      timerRef.current = setInterval(() => {
-        setRestSecondsLeft((prev) => {
-          if (prev <= 4 && prev > 1) {
-            sound.playCountdownTick();
-          }
-          if (prev <= 1) {
-            clearInterval(timerRef.current);
-            finishRestPeriod();
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    } else {
-      clearInterval(timerRef.current);
+    if (!isResting || isRestPaused) return;
+
+    if (restSecondsLeft <= 0) {
+      finishRestPeriod();
+      return;
     }
+
+    timerRef.current = setInterval(() => {
+      setRestSecondsLeft((prev) => {
+        if (prev <= 4 && prev > 1) {
+          sound.playCountdownTick();
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
     return () => clearInterval(timerRef.current);
   }, [isResting, isRestPaused, restSecondsLeft]);
 
@@ -107,8 +106,8 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
     sound.playSetComplete();
 
     const currentEx = getCurrentExerciseData();
-    const setsTotal = currentEx.routineConfig.sets;
-    const restTime = currentEx.routineConfig.restSec || 60;
+    const setsTotal = currentEx ? currentEx.routineConfig.sets : 3;
+    const restTime = currentEx ? currentEx.routineConfig.restSec || 60 : 60;
 
     // Log volume
     const setVolume = Number(liveReps) * Number(liveWeight);
@@ -116,10 +115,21 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
     setCompletedSetsCount((prev) => prev + 1);
 
     if (currentSet < setsTotal) {
+      setCurrentSet((prev) => prev + 1);
       setRestSecondsLeft(restTime);
       setIsResting(true);
       setIsRestPaused(false);
     } else if (currentExIndex < activeRoutine.exercises.length - 1) {
+      const nextIdx = currentExIndex + 1;
+      setCurrentExIndex(nextIdx);
+      setCurrentSet(1);
+
+      const nextExConfig = activeRoutine.exercises[nextIdx];
+      if (nextExConfig) {
+        setLiveReps(nextExConfig.targetReps || 10);
+        setLiveWeight(nextExConfig.targetWeight || 12);
+      }
+
       setRestSecondsLeft(restTime);
       setIsResting(true);
       setIsRestPaused(false);
@@ -131,23 +141,6 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
   const finishRestPeriod = () => {
     sound.playRestOver();
     setIsResting(false);
-
-    const currentEx = getCurrentExerciseData();
-    const setsTotal = currentEx.routineConfig.sets;
-
-    if (currentSet < setsTotal) {
-      setCurrentSet((prev) => prev + 1);
-    } else {
-      const nextIdx = currentExIndex + 1;
-      setCurrentExIndex(nextIdx);
-      setCurrentSet(1);
-
-      const nextExConfig = activeRoutine.exercises[nextIdx];
-      if (nextExConfig) {
-        setLiveReps(nextExConfig.targetReps || 10);
-        setLiveWeight(nextExConfig.targetWeight || 12);
-      }
-    }
   };
 
   const handleSkipRest = () => {
@@ -359,10 +352,8 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
 
   // --- VIEW 3: REST PERIOD INTERVAL VIEW ---
   if (isResting) {
-    const nextSetNumber = currentSet < currentSetsTotal ? currentSet + 1 : 1;
-    const isNextExercise = currentSet >= currentSetsTotal;
-    const nextExConfig = isNextExercise ? activeRoutine.exercises[currentExIndex + 1] : null;
-    const nextExData = nextExConfig ? EXERCISES.find((e) => e.id === nextExConfig.exerciseId) : currentEx;
+    const isNextExercise = currentSet === 1;
+    const nextExData = getCurrentExerciseData();
 
     return (
       <div className="max-w-3xl mx-auto px-4 py-8 text-center">
@@ -420,7 +411,7 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
 
           <div className="border-t border-slate-800/80 pt-6 text-left max-w-md mx-auto">
             <p className="text-xs text-slate-400 uppercase font-semibold tracking-wider mb-2">
-              Next Up ({isNextExercise ? 'Next Exercise' : `Set ${nextSetNumber} of ${currentSetsTotal}`}):
+              Next Up ({isNextExercise ? 'Next Exercise' : `Set ${currentSet} of ${currentSetsTotal}`}):
             </p>
             <div className="flex items-center gap-4 bg-slate-950/60 border border-slate-800 rounded-2xl p-3">
               <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center shrink-0">
@@ -429,7 +420,7 @@ export const WorkoutPlayer = ({ selectedRoutine, routines, onSelectRoutine, onFi
               <div>
                 <h4 className="text-sm font-bold text-white">{nextExData ? nextExData.name : 'Next Exercise'}</h4>
                 <p className="text-xs text-slate-400">
-                  Target: {nextExConfig ? nextExConfig.targetReps : liveReps} reps @ {nextExConfig ? nextExConfig.targetWeight : liveWeight} kg
+                  Target: {liveReps} reps @ {liveWeight} kg
                 </p>
               </div>
             </div>
